@@ -80,43 +80,41 @@
 
 ## Traceability
 
-Заполняется при создании roadmap.
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | — | Pending |
-| AUTH-02 | — | Pending |
-| AUTH-03 | — | Pending |
-| AUTH-04 | — | Pending |
-| PRICE-01 | — | Pending |
-| PRICE-02 | — | Pending |
-| CLIENT-01 | — | Pending |
-| CLIENT-02 | — | Pending |
-| CLIENT-03 | — | Pending |
-| ORDER-01 | — | Pending |
-| ORDER-02 | — | Pending |
-| ORDER-03 | — | Pending |
-| ORDER-04 | — | Pending |
-| ORDER-05 | — | Pending |
-| ORDER-06 | — | Pending |
-| ORDER-07 | — | Pending |
-| ORDER-08 | — | Pending |
-| ORDER-09 | — | Pending |
-| ORDER-10 | — | Pending |
-| ORDER-11 | — | Pending |
-| DEBT-01 | — | Pending |
-| DEBT-02 | — | Pending |
-| DEBT-03 | — | Pending |
-| REPORT-01 | — | Pending |
-| REPORT-02 | — | Pending |
-| REPORT-03 | — | Pending |
-| REPORT-04 | — | Pending |
+| AUTH-01 | Phase 1 | Pending |
+| AUTH-02 | Phase 1 | Pending |
+| AUTH-03 | Phase 1 | Pending |
+| AUTH-04 | Phase 1 | Pending |
+| PRICE-01 | Phase 2 | Pending |
+| PRICE-02 | Phase 2 | Pending |
+| CLIENT-01 | Phase 3 | Pending |
+| CLIENT-02 | Phase 3 | Pending |
+| CLIENT-03 | Phase 3 | Pending |
+| ORDER-01 | Phase 3 | Pending |
+| ORDER-02 | Phase 3 | Pending |
+| ORDER-03 | Phase 3 | Pending |
+| ORDER-04 | Phase 3 | Pending |
+| ORDER-05 | Phase 3 | Pending |
+| ORDER-06 | Phase 3 | Pending |
+| ORDER-07 | Phase 3 | Pending |
+| ORDER-08 | Phase 3 | Pending |
+| ORDER-09 | Phase 3 | Pending |
+| ORDER-10 | Phase 3 | Pending |
+| ORDER-11 | Phase 3 | Pending |
+| DEBT-01 | Phase 4 | Pending |
+| DEBT-02 | Phase 4 | Pending |
+| DEBT-03 | Phase 4 | Pending |
+| REPORT-01 | Phase 5 | Pending |
+| REPORT-02 | Phase 5 | Pending |
+| REPORT-03 | Phase 5 | Pending |
+| REPORT-04 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 27 total
-- Mapped to phases: 0
-- Unmapped: 27 ⚠️
+- Mapped to phases: 27
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-28*
-*Last updated: 2026-04-28 after initial definition*
+*Last updated: 2026-04-28 after roadmap creation*
