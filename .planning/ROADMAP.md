@@ -30,7 +30,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. После обновления страницы пользователь остаётся в системе (сессия сохранена)
   4. Пользователь нажимает «Выйти» и перенаправляется на /login
   5. Все таблицы Supabase созданы с включённым RLS (проверяется pg_tables-запросом)
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Next.js 15 scaffold + Supabase migration files + env setup
+- [ ] 01-02-PLAN.md — Session layer (iron-session, DAL, Supabase clients, DB types)
+- [ ] 01-03-PLAN.md — Auth UI (middleware, login page, Server Actions) + browser verify
 
 ### Phase 2: Daily Prices
 **Goal**: Продавец может установить цены на день и скопировать вчерашние одной кнопкой — до создания первого заказа дня
@@ -83,7 +88,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/TBD | Not started | - |
+| 1. Foundation | 0/3 | Not started | - |
 | 2. Daily Prices | 0/TBD | Not started | - |
 | 3. Orders | 0/TBD | Not started | - |
 | 4. Debt Management | 0/TBD | Not started | - |
