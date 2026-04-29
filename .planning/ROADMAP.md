@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Next.js 15 scaffold + Supabase migration files + env setup
+- [x] 01-01-PLAN.md — Next.js 15 scaffold + Supabase migration files + env setup
 - [ ] 01-02-PLAN.md — Session layer (iron-session, DAL, Supabase clients, DB types)
 - [ ] 01-03-PLAN.md — Auth UI (middleware, login page, Server Actions) + browser verify
 

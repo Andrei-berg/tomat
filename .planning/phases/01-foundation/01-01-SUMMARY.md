@@ -11,7 +11,8 @@ provides:
   - All runtime dependencies installed (iron-session, @supabase/supabase-js, @supabase/ssr, zod, server-only)
   - Supabase migration: 6 tables (products, prices, clients, orders, order_items, debt_payments) with RLS on all
   - Supabase seed: 6 tomato products in sort order
-  - .env.local template with 5 required env vars (user must fill in)
+  - .env.local with all 5 required env vars configured
+  - Supabase migration applied, 6 products seeded, npm run dev running on localhost:3000
 affects: [02-session-layer, 03-orders, 04-debt, 05-reports]
 
 # Tech tracking
@@ -42,6 +43,7 @@ key-files:
     - src/app/globals.css
     - supabase/migrations/20260429000000_initial_schema.sql
     - supabase/seed.sql
+    - .env.local (gitignored — contains Supabase keys + iron-session secret + app password)
   modified: []
 
 key-decisions:
@@ -57,28 +59,30 @@ patterns-established:
 requirements-completed: [AUTH-01, AUTH-02, AUTH-03, AUTH-04]
 
 # Metrics
-duration: 3min
+duration: ~30min (including human setup steps)
 completed: 2026-04-29
 ---
 
 # Phase 1 Plan 01: Foundation Scaffolding Summary
 
-**Next.js 16 project scaffolded with iron-session + Supabase dependencies, 6-table PostgreSQL schema with RLS on all tables, and 6 tomato product seed data**
+**Next.js 16 project with iron-session + Supabase dependencies, 6-table PostgreSQL schema with RLS on all tables, 6-product seed data applied, and .env.local configured — dev server running on localhost:3000**
 
 ## Performance
 
-- **Duration:** ~3 min
+- **Duration:** ~30 min (including human Supabase setup steps)
 - **Started:** 2026-04-29T05:35:59Z
-- **Completed:** 2026-04-29T05:38:29Z
-- **Tasks:** 2 of 3 auto-completed (Task 3 is human-action checkpoint)
-- **Files modified:** 12
+- **Completed:** 2026-04-29
+- **Tasks:** 3 of 3 complete
+- **Files modified:** 13 (including .env.local — gitignored)
 
 ## Accomplishments
 
 - Next.js 16.2.4 scaffolded with TypeScript, Tailwind CSS, App Router, src/ dir
 - All dependencies installed: iron-session, @supabase/supabase-js, @supabase/ssr, zod, server-only
-- Full 6-table Supabase schema written with RLS enabled on every table
-- 6 tomato product seed file ready for Supabase SQL Editor
+- Full 6-table Supabase schema applied with RLS enabled on every table
+- 6 tomato product seed data applied (Пятерка, Шестерка, Семерка, Восьмерка, НС, Хара-Хура)
+- .env.local configured with all 5 env vars (Supabase keys + iron-session secret + app password)
+- npm run dev starts successfully on localhost:3000 (HTTP 200)
 
 ## Task Commits
 
@@ -86,7 +90,9 @@ Each task was committed atomically:
 
 1. **Task 1: Scaffold Next.js 15 project with all dependencies** - `354e392` (feat)
 2. **Task 2: Write Supabase migration and seed files** - `fcecfd7` (feat)
-3. **Task 3: Apply Supabase migration and create .env.local** - PENDING (human-action checkpoint)
+3. **Task 3: Apply Supabase migration and create .env.local** - human-action (completed by user — .env.local gitignored, no code commit needed)
+
+**Plan metadata:** see final docs commit
 
 ## Files Created/Modified
 
@@ -100,11 +106,12 @@ Each task was committed atomically:
 - `src/app/globals.css` - Tailwind import only
 - `supabase/migrations/20260429000000_initial_schema.sql` - 6 tables, all with RLS
 - `supabase/seed.sql` - 6 products: Пятерка through Хара-Хура
+- `.env.local` - All 5 env vars configured (gitignored — not committed)
 
 ## Decisions Made
 
 - Used Next.js 16.2.4 (create-next-app resolved to latest) — exceeds 15.2.3 security minimum, safe
-- No local Supabase Docker — SQL files are written for manual application in Dashboard SQL Editor
+- No local Supabase Docker — SQL files written for manual application in Dashboard SQL Editor
 - line_total in order_items is a GENERATED ALWAYS AS stored column (price snapshot at order creation)
 
 ## Deviations from Plan
@@ -130,44 +137,20 @@ Each task was committed atomically:
 
 ## User Setup Required
 
-**External services require manual configuration before proceeding to Plan 02.**
-
-### Steps to complete Plan 01:
-
-**Step 1:** Create a Supabase project at https://supabase.com/dashboard → New project
-
-**Step 2:** In Supabase Dashboard → SQL Editor → New query, copy and run:
-`supabase/migrations/20260429000000_initial_schema.sql`
-Expected: "Success. No rows returned"
-
-**Step 3:** In Supabase Dashboard → SQL Editor → New query, copy and run:
-`supabase/seed.sql`
-Expected: "Success. 6 rows affected"
-
-**Step 4:** Verify RLS — run in SQL Editor:
-```sql
-SELECT tablename, rowsecurity FROM pg_tables WHERE schemaname = 'public' ORDER BY tablename;
-```
-Expected: 6 rows, all with rowsecurity = true
-
-**Step 5:** Create `/home/user/Projects/tomat/.env.local`:
-```
-NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
-SUPABASE_SERVICE_ROLE_KEY=eyJ...
-IRON_SESSION_SECRET=<run: openssl rand -base64 32>
-APP_PASSWORD=<your chosen shared password>
-```
-
-**Step 6:** Verify app starts: `npm run dev` → http://localhost:3000
+All steps completed by user:
+- Supabase project created
+- Migration applied (6 tables with RLS)
+- Seed applied (6 products)
+- .env.local created with all 5 env vars
+- npm run dev verified running on localhost:3000
 
 ## Next Phase Readiness
 
 - Code scaffold: READY — Next.js 16 with all dependencies
-- DB schema files: READY — written, awaiting user application in Supabase
-- .env.local: BLOCKED — user must create after Supabase setup
-- Plan 02 (session layer): BLOCKED until Task 3 human-action complete
+- DB schema: READY — 6 tables with RLS applied in Supabase
+- .env.local: READY — all 5 env vars configured
+- Plan 02 (session layer): READY to execute — all prerequisites met
 
 ---
 *Phase: 01-foundation*
-*Completed: 2026-04-29 (partial — Task 3 pending user action)*
+*Completed: 2026-04-29*
