@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 1 of 5 (Foundation)
-Plan: 2 of 3 in current phase (01-01 complete, 01-02 next)
-Status: Active — ready for Plan 02 (session layer)
-Last activity: 2026-04-29 — Plan 01-01 fully complete: scaffold + schema + .env.local + Supabase applied
+Plan: 3 of 3 in current phase (01-01 complete, 01-02 complete, 01-03 next)
+Status: Active — ready for Plan 03 (login page + auth action + middleware)
+Last activity: 2026-04-29 — Plan 01-02 fully complete: session layer + DAL + Supabase clients + DB types
 
-Progress: [██░░░░░░░░] 13%
+Progress: [███░░░░░░░] 27%
 
 ## Performance Metrics
 
@@ -27,10 +27,10 @@ Progress: [██░░░░░░░░] 13%
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation | 1 of 3 | ~30 min | ~30 min |
+| 01-foundation | 2 of 3 | ~33 min | ~16 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (~30 min)
+- Last 5 plans: 01-01 (~30 min), 01-02 (~3 min)
 - Trend: —
 
 *Updated after each plan completion*
@@ -49,6 +49,9 @@ Recent decisions affecting current work:
 - 01-01: Next.js 16.2.4 installed (create-next-app resolved to latest) — exceeds 15.2.3 security minimum
 - 01-01: line_total in order_items is GENERATED ALWAYS AS stored column — price snapshot at order creation time
 - 01-01: No local Supabase Docker — SQL files applied manually in Supabase Dashboard SQL Editor
+- 01-02: Used hand-typed database.ts placeholder — supabase CLI requires login; can regenerate anytime with npx supabase gen types typescript --project-id sbwgulwjnsitkevtotjp
+- 01-02: line_total omitted from order_items Insert type — GENERATED ALWAYS AS stored column, Postgres computes it
+- 01-02: verifySession() with React cache() is the single auth check entry point for all Server Components and Actions
 
 ### Pending Todos
 
@@ -63,5 +66,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-04-29
-Stopped at: Completed 01-01-PLAN.md — all 3 tasks done, ready for 01-02-PLAN.md
+Stopped at: Completed 01-02-PLAN.md — all 2 tasks done, ready for 01-03-PLAN.md
 Resume file: None
