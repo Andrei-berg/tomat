@@ -62,7 +62,13 @@ Plans:
   3. Пользователь сохраняет заказ — он появляется в списке на /orders с правильной суммой
   4. Пользователь применяет скидку >50% — видит предупреждение (не блокирующее)
   5. Пользователь вводит ручной итог <80% от расчётного — видит запрос подтверждения перед сохранением
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — DAL functions (getOrdersByDate, getOrderById, getOrderWithItems) + Server Actions (createOrder, searchClients, createClient)
+- [ ] 03-02-PLAN.md — OrderForm Client Component (live total, discount, manual total, client search/create, canSave logic)
+- [ ] 03-03-PLAN.md — /orders page (list + day totals + date switcher) + /orders/[id] page (order details)
+- [ ] 03-04-PLAN.md — /orders/new Server Component (hasPrices guard + OrderForm wiring) + browser verify
 
 ### Phase 4: Debt Management
 **Goal**: Владелец и продавец видят актуальные долги клиентов и могут зафиксировать погашение — баланс всегда вычисляется из данных, никогда не хранится отдельно
@@ -94,6 +100,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-04-29 |
 | 2. Daily Prices | 1/2 | In Progress|  |
-| 3. Orders | 0/TBD | Not started | - |
+| 3. Orders | 0/4 | Planned | - |
 | 4. Debt Management | 0/TBD | Not started | - |
 | 5. Reports & Export | 0/TBD | Not started | - |
