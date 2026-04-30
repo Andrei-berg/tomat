@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 1 of 5 (Foundation)
-Plan: 3 of 3 in current phase (01-01 complete, 01-02 complete, 01-03 next)
-Status: Active — ready for Plan 03 (login page + auth action + middleware)
-Last activity: 2026-04-29 — Plan 01-02 fully complete: session layer + DAL + Supabase clients + DB types
+Plan: 3 of 3 in current phase (01-01 complete, 01-02 complete, 01-03 complete)
+Status: Phase 1 Complete — all 3 foundation plans done, ready for Phase 2 (Orders)
+Last activity: 2026-04-29 — Plan 01-03 fully complete: auth middleware, Server Actions, login page, browser-verified
 
-Progress: [███░░░░░░░] 27%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
@@ -27,7 +27,7 @@ Progress: [███░░░░░░░] 27%
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation | 2 of 3 | ~33 min | ~16 min |
+| 01-foundation | 3 of 3 | ~48 min | ~16 min |
 
 **Recent Trend:**
 - Last 5 plans: 01-01 (~30 min), 01-02 (~3 min)
@@ -52,6 +52,8 @@ Recent decisions affecting current work:
 - 01-02: Used hand-typed database.ts placeholder — supabase CLI requires login; can regenerate anytime with npx supabase gen types typescript --project-id sbwgulwjnsitkevtotjp
 - 01-02: line_total omitted from order_items Insert type — GENERATED ALWAYS AS stored column, Postgres computes it
 - 01-02: verifySession() with React cache() is the single auth check entry point for all Server Components and Actions
+- 01-03: Next.js 16 uses src/proxy.ts as middleware entry point (Proxy (Middleware) in build output) — middleware changes go in proxy.ts
+- 01-03: Password compared directly with process.env.APP_PASSWORD — no hashing for single-user internal tool where secret is in env, never in DB
 
 ### Pending Todos
 
@@ -66,5 +68,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-04-29
-Stopped at: Completed 01-02-PLAN.md — all 2 tasks done, ready for 01-03-PLAN.md
+Stopped at: Completed 01-03-PLAN.md — all 3 foundation plans done, Phase 1 complete. Ready for Phase 2 (Orders).
 Resume file: None

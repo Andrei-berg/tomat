@@ -12,7 +12,7 @@
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - DB schema + RLS + авторизация на общем пароле + проектный скаффолдинг
+- [x] **Phase 1: Foundation** - DB schema + RLS + авторизация на общем пароле + проектный скаффолдинг
 - [ ] **Phase 2: Daily Prices** - Экран установки цен на день для всех 6 товаров
 - [ ] **Phase 3: Orders** - Форма создания заказа и список заказов — ядро ценности продукта
 - [ ] **Phase 4: Debt Management** - Экран долгов с вычисляемым балансом и фиксацией погашений
@@ -34,8 +34,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md — Next.js 15 scaffold + Supabase migration files + env setup
-- [ ] 01-02-PLAN.md — Session layer (iron-session, DAL, Supabase clients, DB types)
-- [ ] 01-03-PLAN.md — Auth UI (middleware, login page, Server Actions) + browser verify
+- [x] 01-02-PLAN.md — Session layer (iron-session, DAL, Supabase clients, DB types)
+- [x] 01-03-PLAN.md — Auth UI (middleware, login page, Server Actions) + browser verify
 
 ### Phase 2: Daily Prices
 **Goal**: Продавец может установить цены на день и скопировать вчерашние одной кнопкой — до создания первого заказа дня
@@ -88,7 +88,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 1/3 | In Progress|  |
+| 1. Foundation | 3/3 | Complete | 2026-04-29 |
 | 2. Daily Prices | 0/TBD | Not started | - |
 | 3. Orders | 0/TBD | Not started | - |
 | 4. Debt Management | 0/TBD | Not started | - |
