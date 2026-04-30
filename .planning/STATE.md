@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-04-30T16:32:42.634Z"
+last_updated: "2026-04-30T16:36:29.058Z"
 progress:
   total_phases: 3
   completed_phases: 2
   total_plans: 9
-  completed_plans: 6
+  completed_plans: 8
 ---
 
 # Project State
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 3 of 5 (Orders)
-Plan: 1 of 4 in current phase (03-01 complete)
-Status: Phase 3 In Progress — DAL + Server Actions done, next: 03-02 (order form UI)
-Last activity: 2026-04-30 — Plan 03-01 complete: Orders DAL (getOrdersByDate, getOrderById, getOrderWithItems) + Server Actions (createOrder, searchClients, createClient)
+Plan: 4 of 4 in current phase (03-01, 03-02, 03-03 complete; 03-04 next)
+Status: Phase 3 In Progress — DAL + Server Actions + OrderForm + /orders + /orders/[id] done; next: 03-04
+Last activity: 2026-04-30 — Plan 03-03 complete: /orders and /orders/[id] Server Component pages
 
 Progress: [██████░░░░] 60%
 
@@ -50,6 +50,8 @@ Progress: [██████░░░░] 60%
 | Phase 02-daily-prices P01 | 13 | 2 tasks | 7 files |
 | Phase 02-daily-prices P02 | 20 | 3 tasks | 2 files |
 | Phase 03-orders P01 | 8 | 2 tasks | 2 files |
+| Phase 03-orders P02 | 2 | 1 task | 1 file |
+| Phase 03-orders P03 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -76,6 +78,8 @@ Recent decisions affecting current work:
 - 02-02: Copy button type=button with direct async call — lets user edit copied prices before saving
 - [Phase 03-orders]: OrderWithItems uses unknown cast for Supabase join — Relationships:[] means join types aren't inferred
 - [Phase 03-orders]: createClient renamed to createSupabaseClient in orders.ts to avoid name collision with exported createClient for clients
+- [Phase 03-orders]: searchParams and params are Promise in Next.js 16 — must await before reading
+- [Phase 03-orders]: 03-03: line_total used directly from order_items (GENERATED ALWAYS AS stored column) — no recalculation in UI
 
 ### Pending Todos
 
@@ -90,5 +94,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-04-30
-Stopped at: Completed 03-01-PLAN.md — Orders DAL + Server Actions (createOrder, searchClients, createClient). Phase 3 plan 01 done.
+Stopped at: Completed 03-03-PLAN.md — /orders and /orders/[id] Server Component pages (ORDER-11). Phase 3 plan 03 done.
 Resume file: None

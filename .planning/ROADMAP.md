@@ -100,6 +100,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-04-29 |
 | 2. Daily Prices | 1/2 | In Progress|  |
-| 3. Orders | 0/4 | Planned | - |
+| 3. Orders | 3/4 | In Progress|  |
 | 4. Debt Management | 0/TBD | Not started | - |
 | 5. Reports & Export | 0/TBD | Not started | - |
