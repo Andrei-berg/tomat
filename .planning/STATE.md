@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-04-30T09:56:50.877Z"
+last_updated: "2026-04-30T16:32:42.634Z"
 progress:
-  total_phases: 2
+  total_phases: 3
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
+  total_plans: 9
+  completed_plans: 6
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** Продавец оформляет продажу за ≤30 секунд с телефона — быстрее, чем тетрадь
-**Current focus:** Phase 2 — Daily Prices
+**Current focus:** Phase 3 — Orders
 
 ## Current Position
 
-Phase: 2 of 5 (Daily Prices)
-Plan: 2 of 3 in current phase (02-02 complete)
-Status: Phase 2 In Progress — data layer and prices UI done, next: 02-03 (if any) or Phase 3
-Last activity: 2026-04-30 — Plan 02-02 complete: /prices Server Component page + PricesForm Client Component, human-verified in browser
+Phase: 3 of 5 (Orders)
+Plan: 1 of 4 in current phase (03-01 complete)
+Status: Phase 3 In Progress — DAL + Server Actions done, next: 03-02 (order form UI)
+Last activity: 2026-04-30 — Plan 03-01 complete: Orders DAL (getOrdersByDate, getOrderById, getOrderWithItems) + Server Actions (createOrder, searchClients, createClient)
 
-Progress: [█████░░░░░] 50%
+Progress: [██████░░░░] 60%
 
 ## Performance Metrics
 
@@ -49,6 +49,7 @@ Progress: [█████░░░░░] 50%
 *Updated after each plan completion*
 | Phase 02-daily-prices P01 | 13 | 2 tasks | 7 files |
 | Phase 02-daily-prices P02 | 20 | 3 tasks | 2 files |
+| Phase 03-orders P01 | 8 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,8 @@ Recent decisions affecting current work:
 - [Phase 02-daily-prices]: copyYesterdayPrices returns data only — UI populates form, then calls savePrices separately (no single-action copy-and-save)
 - 02-02: Parallel Promise.all in Server Component for products + prices — minimal TTFB on page load
 - 02-02: Copy button type=button with direct async call — lets user edit copied prices before saving
+- [Phase 03-orders]: OrderWithItems uses unknown cast for Supabase join — Relationships:[] means join types aren't inferred
+- [Phase 03-orders]: createClient renamed to createSupabaseClient in orders.ts to avoid name collision with exported createClient for clients
 
 ### Pending Todos
 
@@ -87,5 +90,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-04-30
-Stopped at: Completed 02-02-PLAN.md — /prices page with PricesForm, human-verified. Phase 2 plans 01-02 done.
+Stopped at: Completed 03-01-PLAN.md — Orders DAL + Server Actions (createOrder, searchClients, createClient). Phase 3 plan 01 done.
 Resume file: None
