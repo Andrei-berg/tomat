@@ -46,7 +46,11 @@ Plans:
   2. Пользователь вводит цены и сохраняет — значения появляются снова при следующем открытии страницы
   3. Пользователь нажимает «Скопировать вчерашние» — поля заполняются ценами предыдущего дня
   4. Попытка перейти на /orders/new без установленных цен на сегодня перенаправляет на /prices
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — DAL price functions (getTodayPrices, hasTodayPrices) + Server Actions (savePrices, copyYesterdayPrices)
+- [ ] 02-02-PLAN.md — /prices page (Server Component) + PricesForm (Client Component) + browser verify
 
 ### Phase 3: Orders
 **Goal**: Продавец может создать заказ за ≤30 секунд с телефона — с товарами, весом, скидкой, типом оплаты и привязкой к клиенту
@@ -89,7 +93,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-04-29 |
-| 2. Daily Prices | 0/TBD | Not started | - |
+| 2. Daily Prices | 0/2 | Not started | - |
 | 3. Orders | 0/TBD | Not started | - |
 | 4. Debt Management | 0/TBD | Not started | - |
 | 5. Reports & Export | 0/TBD | Not started | - |
