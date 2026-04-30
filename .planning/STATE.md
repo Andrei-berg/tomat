@@ -78,6 +78,8 @@ Recent decisions affecting current work:
 - 02-02: Copy button type=button with direct async call — lets user edit copied prices before saving
 - [Phase 03-orders]: OrderWithItems uses unknown cast for Supabase join — Relationships:[] means join types aren't inferred
 - [Phase 03-orders]: createClient renamed to createSupabaseClient in orders.ts to avoid name collision with exported createClient for clients
+- 03-02: manual_total has absolute priority over discount_percent in effectiveTotal — user-explicit total overrides percentage discount
+- 03-02: formKey state increment used to reset form + useActionState after successful order — remounts form subtree cleanly
 - [Phase 03-orders]: searchParams and params are Promise in Next.js 16 — must await before reading
 - [Phase 03-orders]: 03-03: line_total used directly from order_items (GENERATED ALWAYS AS stored column) — no recalculation in UI
 
@@ -94,5 +96,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-04-30
-Stopped at: Completed 03-03-PLAN.md — /orders and /orders/[id] Server Component pages (ORDER-11). Phase 3 plan 03 done.
+Stopped at: Completed 03-02-PLAN.md — OrderForm 'use client' component (live totals, discount priority, debounced client search, canSave). Phase 3 plan 02 done.
 Resume file: None
