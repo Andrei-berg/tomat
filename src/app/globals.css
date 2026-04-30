@@ -1,1 +1,41 @@
 @import "tailwindcss";
+
+/* ── Market design tokens ─────────────────────────────── */
+:root {
+  --mk-bg:          #0c0906;
+  --mk-surface:     #171109;
+  --mk-card:        #1e1509;
+  --mk-card-fill:   #271d0b;
+  --mk-border:      #322614;
+  --mk-accent:      #c8431a;
+  --mk-accent-hi:   #e05a28;
+  --mk-accent-glow: rgba(200, 67, 26, 0.28);
+  --mk-text:        #ede4d4;
+  --mk-text-2:      #86735d;
+  --mk-text-3:      #4f4030;
+
+  --mk-ok-bg:     rgba(55, 175, 90, 0.1);
+  --mk-ok-border: rgba(55, 175, 90, 0.2);
+  --mk-ok-text:   #57b875;
+
+  --mk-err-bg:     rgba(185, 55, 35, 0.1);
+  --mk-err-border: rgba(185, 55, 35, 0.22);
+  --mk-err-text:   #d46050;
+}
+
+/* ── Keyframes ────────────────────────────────────────── */
+@keyframes mkUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes mkPop {
+  0%   { opacity: 0; transform: scale(0.95); }
+  55%  {             transform: scale(1.03); }
+  100% { opacity: 1; transform: scale(1);    }
+}
+
+/* ── Strip number-input spinners ──────────────────────── */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"] { -moz-appearance: textfield; }
