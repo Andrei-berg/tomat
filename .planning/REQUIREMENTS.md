@@ -14,8 +14,8 @@
 
 ### Prices
 
-- [ ] **PRICE-01**: Пользователь может установить цену за кг для каждого из 6 товаров на текущий день
-- [ ] **PRICE-02**: Пользователь может скопировать цены предыдущего дня одной кнопкой
+- [x] **PRICE-01**: Пользователь может установить цену за кг для каждого из 6 товаров на текущий день
+- [x] **PRICE-02**: Пользователь может скопировать цены предыдущего дня одной кнопкой
 
 ### Clients
 
@@ -86,8 +86,8 @@
 | AUTH-02 | Phase 1 | Complete |
 | AUTH-03 | Phase 1 | Complete |
 | AUTH-04 | Phase 1 | Complete |
-| PRICE-01 | Phase 2 | Pending |
-| PRICE-02 | Phase 2 | Pending |
+| PRICE-01 | Phase 2 | Complete |
+| PRICE-02 | Phase 2 | Complete |
 | CLIENT-01 | Phase 3 | Pending |
 | CLIENT-02 | Phase 3 | Pending |
 | CLIENT-03 | Phase 3 | Pending |

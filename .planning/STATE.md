@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-04-30T04:58:44.337Z"
+last_updated: "2026-04-30T05:46:12.536Z"
 progress:
-  total_phases: 1
+  total_phases: 2
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 5
+  completed_plans: 4
 ---
 
 # Project State
@@ -18,14 +18,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** Продавец оформляет продажу за ≤30 секунд с телефона — быстрее, чем тетрадь
-**Current focus:** Phase 1 — Foundation
+**Current focus:** Phase 2 — Daily Prices
 
 ## Current Position
 
-Phase: 1 of 5 (Foundation)
-Plan: 3 of 3 in current phase (01-01 complete, 01-02 complete, 01-03 complete)
-Status: Phase 1 Complete — all 3 foundation plans done, ready for Phase 2 (Orders)
-Last activity: 2026-04-29 — Plan 01-03 fully complete: auth middleware, Server Actions, login page, browser-verified
+Phase: 2 of 5 (Daily Prices)
+Plan: 1 of 3 in current phase (02-01 complete)
+Status: Phase 2 In Progress — data layer done, prices UI next
+Last activity: 2026-04-30 — Plan 02-01 complete: DAL functions (getTodayPrices, hasTodayPrices) and Server Actions (savePrices, copyYesterdayPrices) with 14 Jest tests
 
 Progress: [████░░░░░░] 40%
 
@@ -47,6 +47,7 @@ Progress: [████░░░░░░] 40%
 - Trend: —
 
 *Updated after each plan completion*
+| Phase 02-daily-prices P01 | 13 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -67,6 +68,8 @@ Recent decisions affecting current work:
 - 01-02: verifySession() with React cache() is the single auth check entry point for all Server Components and Actions
 - 01-03: Next.js 16 uses src/proxy.ts as middleware entry point (Proxy (Middleware) in build output) — middleware changes go in proxy.ts
 - 01-03: Password compared directly with process.env.APP_PASSWORD — no hashing for single-user internal tool where secret is in env, never in DB
+- [Phase 02-daily-prices]: database.ts requires Relationships:[] on each table + Views/Functions fields to satisfy @supabase/postgrest-js v2.105.1 GenericTable/GenericSchema constraints
+- [Phase 02-daily-prices]: copyYesterdayPrices returns data only — UI populates form, then calls savePrices separately (no single-action copy-and-save)
 
 ### Pending Todos
 
@@ -80,6 +83,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-29
-Stopped at: Completed 01-03-PLAN.md — all 3 foundation plans done, Phase 1 complete. Ready for Phase 2 (Orders).
+Last session: 2026-04-30
+Stopped at: Completed 02-01-PLAN.md — DAL functions and prices Server Actions done. Next: 02-02 (prices UI page).
 Resume file: None
