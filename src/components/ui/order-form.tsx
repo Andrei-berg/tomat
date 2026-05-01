@@ -102,6 +102,7 @@ export default function OrderForm({ products, priceMap }: Props) {
     undefined,
   )
   const [formKey, setFormKey] = useState(0)
+  const [formSubmitted, setFormSubmitted] = useState(false)
 
   /* ── Derived values ── */
   const calculated = calcTotal(items, priceMap)
@@ -110,6 +111,11 @@ export default function OrderForm({ products, priceMap }: Props) {
   const needsClient = paymentType === 'debt'
   const hasClient = selectedClient !== null
   const canSave = hasItems && (!needsClient || hasClient) && !saving && !isPending
+
+  /* ── Sync action success to local state ── */
+  useEffect(() => {
+    if (orderState?.success) setFormSubmitted(true)
+  }, [orderState?.success])
 
   /* ── Debounced client search ── */
   useEffect(() => {
@@ -172,18 +178,20 @@ export default function OrderForm({ products, priceMap }: Props) {
   }
 
   function resetForm() {
+    setFormSubmitted(false)
     setItems(Object.fromEntries(products.map(p => [p.id, { boxes: '', weight: '' }])))
     setDiscountPct('')
     setManualTotal('')
     setPaymentType('cash')
     setClientQuery('')
+    setClientResults([])
     setSelectedClient(null)
     setShowDropdown(false)
     setFormKey(k => k + 1)
   }
 
   /* ── After success ── */
-  if (orderState?.success) {
+  if (formSubmitted) {
     return (
       <div
         style={{
