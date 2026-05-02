@@ -80,7 +80,11 @@ Plans:
   1. Пользователь нажимает «Выйти» — сессия очищается, перенаправление на /login
   2. На каждой защищённой странице есть навигация между /prices и /orders
   3. После сохранения цен на /prices есть кнопка «Создать заказ» → /orders/new
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 03.1-01-PLAN.md — NavBar компонент (usePathname + logout) + подключение на 4 страницы
+- [ ] 03.1-02-PLAN.md — PricesForm: убрать auto-hide success + кнопка «Создать заказ» + browser verify
 
 ### Phase 4: Debt Management
 **Goal**: Владелец и продавец видят актуальные долги клиентов и могут зафиксировать погашение — баланс всегда вычисляется из данных, никогда не хранится отдельно
@@ -113,6 +117,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 3/3 | Complete | 2026-04-29 |
 | 2. Daily Prices | 1/2 | In Progress|  |
 | 3. Orders | 3/4 | In Progress|  |
-| 3.1. Navigation & Auth UX | 0/TBD | Not started | - |
+| 3.1. Navigation & Auth UX | 0/2 | Not started | - |
 | 4. Debt Management | 0/TBD | Not started | - |
 | 5. Reports & Export | 0/TBD | Not started | - |
