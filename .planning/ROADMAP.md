@@ -15,6 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - DB schema + RLS + авторизация на общем пароле + проектный скаффолдинг
 - [ ] **Phase 2: Daily Prices** - Экран установки цен на день для всех 6 товаров
 - [ ] **Phase 3: Orders** - Форма создания заказа и список заказов — ядро ценности продукта
+- [ ] **Phase 3.1: Navigation & Auth UX** *(INSERTED — Gap Closure)* - Logout-кнопка + навигация между разделами + возврат из /prices
 - [ ] **Phase 4: Debt Management** - Экран долгов с вычисляемым балансом и фиксацией погашений
 - [ ] **Phase 5: Reports & Export** - Отчёт за период с экспортом в Excel и PDF
 
@@ -70,6 +71,17 @@ Plans:
 - [ ] 03-03-PLAN.md — /orders page (list + day totals + date switcher) + /orders/[id] page (order details)
 - [ ] 03-04-PLAN.md — /orders/new Server Component (hasPrices guard + OrderForm wiring) + browser verify
 
+### Phase 3.1: Navigation & Auth UX *(INSERTED — Gap Closure)*
+**Goal**: Пользователь может выйти из системы нажатием кнопки и переходить между разделами без набора URL — закрывает AUTH-04 и UX-разрывы из аудита v1.0
+**Depends on**: Phase 3
+**Requirements**: AUTH-04
+**Gap Closure**: Закрывает пробелы из аудита v1.0 (2026-05-02)
+**Success Criteria** (what must be TRUE):
+  1. Пользователь нажимает «Выйти» — сессия очищается, перенаправление на /login
+  2. На каждой защищённой странице есть навигация между /prices и /orders
+  3. После сохранения цен на /prices есть кнопка «Создать заказ» → /orders/new
+**Plans**: TBD
+
 ### Phase 4: Debt Management
 **Goal**: Владелец и продавец видят актуальные долги клиентов и могут зафиксировать погашение — баланс всегда вычисляется из данных, никогда не хранится отдельно
 **Depends on**: Phase 3
@@ -101,5 +113,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 3/3 | Complete | 2026-04-29 |
 | 2. Daily Prices | 1/2 | In Progress|  |
 | 3. Orders | 3/4 | In Progress|  |
+| 3.1. Navigation & Auth UX | 0/TBD | Not started | - |
 | 4. Debt Management | 0/TBD | Not started | - |
 | 5. Reports & Export | 0/TBD | Not started | - |
