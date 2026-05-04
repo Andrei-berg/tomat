@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-05-04T18:21:20.140Z"
+last_updated: "2026-05-04T18:34:18.330Z"
 progress:
   total_phases: 6
   completed_phases: 6
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 ## Current Position
 
-Phase: 4.1 of 5 (Partial Payments at Order Creation)
-Plan: 1 of 2 complete (04.1-01 done — createOrder extended with prepayment handling)
-Status: Phase 4.1 in progress — plan 01 done, plan 02 (UI fields) remaining
-Last activity: 2026-05-04 — Plan 04.1-01 complete: createOrder extended with best-effort prepayment insert + orders.status update
+Phase: 4.1 of 5 (Partial Payments at Order Creation) — COMPLETE
+Plan: 2 of 2 complete (04.1-02 done — OrderForm prepayment UI browser verified)
+Status: Phase 04.1 complete — ready for Phase 05 (Reports)
+Last activity: 2026-05-04 — Plan 04.1-02 complete: OrderForm extended with optional Предоплата section, browser verification approved
 
-Progress: [█████████░] 93%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -58,7 +58,7 @@ Progress: [█████████░] 93%
 | Phase 04 P02 | 2 | 2 tasks | 2 files |
 | Phase 04 P03 | ~20 | 2 tasks | 2 files |
 | Phase 04.1-partial-payments-at-order-creation P01 | 1 | 1 tasks | 1 files |
-| Phase 04.1-partial-payments-at-order-creation P02 | 2 | 1 tasks | 1 files |
+| Phase 04.1-partial-payments-at-order-creation P02 | 15 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -123,5 +123,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-04
-Stopped at: Completed 04.1-01-PLAN.md — createOrder extended with prepayment handling; 04.1-02 (UI fields for prepayment) is next.
+Stopped at: Completed 04.1-02-PLAN.md — OrderForm prepayment UI browser verified; Phase 04.1 fully complete. Phase 05 (Reports) is next.
 Resume file: None
