@@ -269,3 +269,123 @@ export async function getDebtPayments(orderId: string): Promise<DebtPaymentRow[]
     .order('paid_at', { ascending: true })
   return (data ?? []) as DebtPaymentRow[]
 }
+
+// ─── Report ──────────────────────────────────────────────────────────────────
+
+export type ReportPaymentSummary = {
+  cash: number
+  card: number
+  debtUnpaid: number    // effective total of debt orders minus payments received
+  debtReceived: number  // sum of debt_payments on orders created in the period
+}
+
+export type ReportProductRow = {
+  productId: string
+  productName: string
+  totalBoxes: number
+  totalKg: number
+  totalAmount: number
+}
+
+export type ReportData = {
+  paymentSummary: ReportPaymentSummary
+  productRows: ReportProductRow[]
+  fromDate: string
+  toDate: string
+}
+
+export async function getReportData(from: string, to: string): Promise<ReportData> {
+  const supabase = createClient()
+
+  const [{ data: rawOrders }, { data: allPayments }, { data: products }] = await Promise.all([
+    supabase
+      .from('orders')
+      .select('id, payment_type, calculated_total, discount_percent, manual_total, status, order_items(product_id, boxes_count, weight_kg, line_total, products(name))')
+      .gte('created_at', `${from}T00:00:00+00:00`)
+      .lte('created_at', `${to}T23:59:59+00:00`),
+    supabase
+      .from('debt_payments')
+      .select('order_id, amount'),
+    supabase
+      .from('products')
+      .select('id, name')
+      .order('sort_order', { ascending: true }),
+  ])
+
+  type RawItem = {
+    product_id: string
+    boxes_count: number
+    weight_kg: number
+    line_total: number
+    products: { name: string } | null
+  }
+  type RawOrd = {
+    id: string
+    payment_type: string
+    calculated_total: number | null
+    discount_percent: number | null
+    manual_total: number | null
+    status: string
+    order_items: RawItem[]
+  }
+  const orders = (rawOrders ?? []) as unknown as RawOrd[]
+
+  // Build a map of payments per order (all time — not date filtered)
+  const paidByOrder = new Map<string, number>()
+  for (const p of allPayments ?? []) {
+    paidByOrder.set(p.order_id, (paidByOrder.get(p.order_id) ?? 0) + (p.amount as number))
+  }
+
+  // Compute debtReceived = payments on orders created in the period
+  const orderIdsInPeriod = new Set(orders.map(o => o.id))
+  let debtReceived = 0
+  for (const [orderId, amount] of paidByOrder) {
+    if (orderIdsInPeriod.has(orderId)) debtReceived += amount
+  }
+
+  const paymentSummary: ReportPaymentSummary = {
+    cash: 0,
+    card: 0,
+    debtUnpaid: 0,
+    debtReceived,
+  }
+
+  // Initialize product map from products table (preserves sort_order)
+  const productMap = new Map<string, ReportProductRow>()
+  for (const prod of products ?? []) {
+    productMap.set(prod.id, {
+      productId: prod.id,
+      productName: prod.name as string,
+      totalBoxes: 0,
+      totalKg: 0,
+      totalAmount: 0,
+    })
+  }
+
+  for (const o of orders) {
+    const eff = calcEffective(o)
+    if (o.payment_type === 'cash') {
+      paymentSummary.cash += eff
+    } else if (o.payment_type === 'card') {
+      paymentSummary.card += eff
+    } else if (o.payment_type === 'debt') {
+      const paid = paidByOrder.get(o.id) ?? 0
+      paymentSummary.debtUnpaid += Math.max(0, eff - paid)
+    }
+
+    for (const item of o.order_items) {
+      const row = productMap.get(item.product_id)
+      if (row) {
+        row.totalBoxes += item.boxes_count
+        row.totalKg += item.weight_kg
+        row.totalAmount += item.line_total
+      }
+    }
+  }
+
+  const productRows = Array.from(productMap.values()).filter(
+    r => r.totalBoxes > 0 || r.totalKg > 0
+  )
+
+  return { paymentSummary, productRows, fromDate: from, toDate: to }
+}
