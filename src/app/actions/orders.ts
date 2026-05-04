@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { verifySession } from '@/lib/dal'
+import { verifySession, calcEffective } from '@/lib/dal'
 import { createClient as createSupabaseClient } from '@/lib/supabase/server'
 
 export type CreateOrderState = { error?: string; success?: boolean; orderId?: string } | undefined
@@ -102,6 +102,31 @@ export async function createOrder(
     // Compensating delete — Supabase free tier has no transactions via JS client
     await supabase.from('orders').delete().eq('id', order.id)
     return { error: itemsError.message }
+  }
+
+  // Optional prepayment for debt orders
+  const prepaymentRaw = parseFloat(formData.get('prepayment_amount') as string)
+  const prepaymentType = formData.get('prepayment_type') as string
+
+  if (payment_type === 'debt' && !isNaN(prepaymentRaw) && prepaymentRaw > 0) {
+    const effectiveAmt = calcEffective({ calculated_total, discount_percent, manual_total })
+    const safeAmount = Math.min(prepaymentRaw, effectiveAmt)
+
+    const { error: prepayErr } = await supabase.from('debt_payments').insert({
+      order_id: order.id,
+      amount: safeAmount,
+      payment_type: (prepaymentType === 'card' ? 'card' : 'cash') as 'cash' | 'card',
+    })
+
+    if (!prepayErr) {
+      const newStatus = safeAmount >= effectiveAmt ? 'paid' : 'partial'
+      await supabase.from('orders').update({ status: newStatus }).eq('id', order.id)
+      // Revalidate debts regardless of partial or paid — debtor balance changes in both cases
+      revalidatePath('/debts')
+      revalidatePath('/debtors')
+    }
+    // If prepayErr: order was created successfully — prepayment is best-effort.
+    // Seller can record it later via /debts/[clientId].
   }
 
   revalidatePath('/orders')
