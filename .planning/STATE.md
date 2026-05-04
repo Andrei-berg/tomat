@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-05-04T07:28:50.625Z"
+last_updated: "2026-05-04T12:32:07.114Z"
 progress:
-  total_phases: 4
+  total_phases: 5
   completed_phases: 4
-  total_plans: 11
-  completed_plans: 11
+  total_plans: 14
+  completed_plans: 12
 ---
 
 # Project State
@@ -54,6 +54,7 @@ Progress: [████████░░] 80%
 | Phase 03-orders P03 | 2 | 2 tasks | 2 files |
 | Phase 03.1-navigation-auth-ux P01 | 15 | 2 tasks | 5 files |
 | Phase 03.1-navigation-auth-ux P02 | 5 | 1 task | 1 file |
+| Phase 04-debt-management P01 | 1 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -87,6 +88,8 @@ Recent decisions affecting current work:
 - [Phase 03.1-01]: NavBar replaces paddingTop: 48px header spacing — component itself provides top padding via paddingTop: 20px
 - [Phase 03.1-01]: form action={logout} pattern for logout — works without JS (progressive enhancement)
 - [Phase 03.1-02]: showSuccess resets only on next saveState change (not via setTimeout) — user has unlimited time to click «Создать заказ»
+- [Phase 04-debt-management]: 04-01: getClientDebtOrders uses two sequential queries (not Promise.all) to join payments by orderIds, not clientId
+- [Phase 04-debt-management]: 04-01: calcEffective exported from dal.ts for reuse in Server Action without duplication
 
 ### Pending Todos
 

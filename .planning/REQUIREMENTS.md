@@ -39,9 +39,9 @@
 
 ### Debts
 
-- [ ] **DEBT-01**: Пользователь видит список всех клиентов с остатком долга > 0
-- [ ] **DEBT-02**: Пользователь может зафиксировать полное или частичное погашение долга
-- [ ] **DEBT-03**: Пользователь может просмотреть историю погашений по каждому долгу
+- [x] **DEBT-01**: Пользователь видит список всех клиентов с остатком долга > 0
+- [x] **DEBT-02**: Пользователь может зафиксировать полное или частичное погашение долга
+- [x] **DEBT-03**: Пользователь может просмотреть историю погашений по каждому долгу
 
 ### Report
 
@@ -102,9 +102,9 @@
 | ORDER-09 | Phase 3 | Complete |
 | ORDER-10 | Phase 3 | Complete |
 | ORDER-11 | Phase 3 | Complete |
-| DEBT-01 | Phase 4 | Pending |
-| DEBT-02 | Phase 4 | Pending |
-| DEBT-03 | Phase 4 | Pending |
+| DEBT-01 | Phase 4 | Complete |
+| DEBT-02 | Phase 4 | Complete |
+| DEBT-03 | Phase 4 | Complete |
 | REPORT-01 | Phase 5 | Pending |
 | REPORT-02 | Phase 5 | Pending |
 | REPORT-03 | Phase 5 | Pending |
