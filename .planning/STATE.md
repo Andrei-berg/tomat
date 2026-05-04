@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-05-04T12:32:07.114Z"
+last_updated: "2026-05-04T12:35:00.962Z"
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 14
-  completed_plans: 12
+  completed_plans: 13
 ---
 
 # Project State
@@ -55,6 +55,7 @@ Progress: [████████░░] 80%
 | Phase 03.1-navigation-auth-ux P01 | 15 | 2 tasks | 5 files |
 | Phase 03.1-navigation-auth-ux P02 | 5 | 1 task | 1 file |
 | Phase 04-debt-management P01 | 1 | 1 tasks | 1 files |
+| Phase 04 P02 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -90,6 +91,9 @@ Recent decisions affecting current work:
 - [Phase 03.1-02]: showSuccess resets only on next saveState change (not via setTimeout) — user has unlimited time to click «Создать заказ»
 - [Phase 04-debt-management]: 04-01: getClientDebtOrders uses two sequential queries (not Promise.all) to join payments by orderIds, not clientId
 - [Phase 04-debt-management]: 04-01: calcEffective exported from dal.ts for reuse in Server Action without duplication
+- [Phase 04]: 04-02: Payment validation re-fetches order + payments in real-time (Promise.all) to prevent overpayments
+- [Phase 04]: 04-02: orders.status updated to partial or paid atomically after debt_payments insert
+- [Phase 04]: 04-02: PaymentForm replaces itself with success message on state.success — revalidation brings fresh data
 
 ### Pending Todos
 
