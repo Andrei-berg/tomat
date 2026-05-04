@@ -106,10 +106,10 @@ Plans:
 **Goal:** [Urgent work - to be planned]
 **Requirements**: TBD
 **Depends on:** Phase 4
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 04.1 to break down)
+- [x] TBD (run /gsd:plan-phase 04.1 to break down) (completed 2026-05-04)
 
 ### Phase 5: Reports & Export
 **Goal**: Владелец может посмотреть выручку и объёмы за произвольный период и скачать отчёт в Excel или PDF
