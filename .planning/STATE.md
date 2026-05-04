@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** Продавец оформляет продажу за ≤30 секунд с телефона — быстрее, чем тетрадь
-**Current focus:** Phase 3 — Orders
+**Current focus:** Phase 4 — Debt Management
 
 ## Current Position
 
-Phase: 3.1 of 3.1 (Navigation & Auth UX gap closure)
-Plan: 2 of 2 complete (03.1-01 done; 03.1-02 done — browser verify approved)
-Status: Phase 3.1 complete — all tasks done, browser verify passed
-Last activity: 2026-05-04 — Plan 03.1-02 Task 2 complete: browser verify approved — NavBar, logout, «Создать заказ» button all confirmed working
+Phase: 4 of 5 (Debt Management)
+Plan: 3 of 3 complete (04-01 done; 04-02 done; 04-03 done — browser verify approved)
+Status: Phase 4 complete — all tasks done, browser verify passed
+Last activity: 2026-05-04 — Plan 04-03 Task 3 complete: browser verify approved — debt detail page, clickable debtors, payment recording all confirmed working
 
-Progress: [████████░░] 80%
+Progress: [█████████░] 90%
 
 ## Performance Metrics
 
@@ -56,6 +56,7 @@ Progress: [████████░░] 80%
 | Phase 03.1-navigation-auth-ux P02 | 5 | 1 task | 1 file |
 | Phase 04-debt-management P01 | 1 | 1 tasks | 1 files |
 | Phase 04 P02 | 2 | 2 tasks | 2 files |
+| Phase 04 P03 | ~20 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,9 @@ Recent decisions affecting current work:
 - [Phase 04]: 04-02: Payment validation re-fetches order + payments in real-time (Promise.all) to prevent overpayments
 - [Phase 04]: 04-02: orders.status updated to partial or paid atomically after debt_payments insert
 - [Phase 04]: 04-02: PaymentForm replaces itself with success message on state.success — revalidation brings fresh data
+- [Phase 04]: 04-03: Anonymous debtors (clientId=null) remain plain divs — cannot navigate to detail without clientId
+- [Phase 04]: 04-03: Nested Link tags inside card link removed — inner name link and +заказ link both dropped to avoid invalid HTML nesting
+- [Phase 04]: 04-03: Payment histories fetched in parallel via Promise.all after orders resolve (sequential dependency — need order IDs first)
 
 ### Pending Todos
 
@@ -108,5 +112,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-04
-Stopped at: Completed 03.1-02-PLAN.md — PricesForm auto-hide removed, «Создать заказ» button added, browser verify approved. Phase 3.1 complete.
+Stopped at: Completed 04-03-PLAN.md — debt detail page + clickable debtors + browser verify approved. Phase 4 complete.
 Resume file: None
