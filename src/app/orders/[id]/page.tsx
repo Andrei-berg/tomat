@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { verifySession, getOrderWithItems } from '@/lib/dal'
 import type { OrderWithItems } from '@/lib/dal'
-import NavBar from '@/components/ui/nav-bar'
+import BottomNav from '@/components/ui/bottom-nav'
 
 function formatRub(amount: number): string {
   return amount.toLocaleString('ru-RU', {
@@ -84,8 +84,7 @@ export default async function OrderDetailPage({
         fontFamily: 'var(--font-geist-sans)',
       }}
     >
-      <div style={{ maxWidth: '480px', margin: '0 auto', padding: '0 20px 52px' }}>
-        <NavBar />
+      <div style={{ maxWidth: '480px', margin: '0 auto', padding: '0 20px', paddingBottom: 'calc(var(--mk-nav-h) + 32px)' }}>
 
         {/* ── Header ─────────────────────────────────── */}
         <header style={{ paddingBottom: '24px' }}>
@@ -331,6 +330,7 @@ export default async function OrderDetailPage({
         </div>
 
       </div>
+      <BottomNav />
     </div>
   )
 }

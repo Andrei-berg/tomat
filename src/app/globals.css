@@ -21,6 +21,12 @@
   --mk-err-bg:     rgba(185, 55, 35, 0.1);
   --mk-err-border: rgba(185, 55, 35, 0.22);
   --mk-err-text:   #d46050;
+
+  --mk-amber:        #d4780e;
+  --mk-amber-bg:     rgba(212, 120, 14, 0.10);
+  --mk-amber-border: rgba(212, 120, 14, 0.22);
+
+  --mk-nav-h: 64px;
 }
 
 /* ── Keyframes ────────────────────────────────────────── */

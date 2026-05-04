@@ -86,3 +86,123 @@ export async function getOrderWithItems(id: string): Promise<OrderWithItems | nu
 
   return { ...raw, order_items: items }
 }
+
+// ── Client helpers ─────────────────────────────────────────────────────────
+
+function calcEffective(o: {
+  calculated_total: number | null
+  discount_percent: number | null
+  manual_total: number | null
+}): number {
+  if (o.manual_total != null) return o.manual_total
+  const base = o.calculated_total ?? 0
+  if (o.discount_percent) return Math.round(base * (1 - o.discount_percent / 100) * 100) / 100
+  return base
+}
+
+export type ClientWithStats = ClientRow & {
+  orderCount: number
+  totalSpent: number
+  lastOrderAt: string | null
+  debtAmount: number
+}
+
+export async function getClientsWithStats(): Promise<ClientWithStats[]> {
+  const supabase = createClient()
+  const [{ data: clients }, { data: orders }, { data: payments }] = await Promise.all([
+    supabase.from('clients').select('*').order('name'),
+    supabase
+      .from('orders')
+      .select('id, client_id, created_at, calculated_total, discount_percent, manual_total, status')
+      .not('client_id', 'is', null),
+    supabase.from('debt_payments').select('order_id, amount'),
+  ])
+
+  const paidByOrder = new Map<string, number>()
+  for (const p of payments ?? []) {
+    paidByOrder.set(p.order_id, (paidByOrder.get(p.order_id) ?? 0) + p.amount)
+  }
+
+  return (clients ?? []).map(client => {
+    const co = (orders ?? []).filter(o => o.client_id === client.id)
+    const sorted = [...co].sort((a, b) => b.created_at.localeCompare(a.created_at))
+    const totalSpent = co.reduce((s, o) => s + calcEffective(o), 0)
+    const debtAmount = co
+      .filter(o => o.status === 'debt' || o.status === 'partial')
+      .reduce((s, o) => s + Math.max(0, calcEffective(o) - (paidByOrder.get(o.id) ?? 0)), 0)
+    return { ...client, orderCount: co.length, totalSpent, lastOrderAt: sorted[0]?.created_at ?? null, debtAmount }
+  })
+}
+
+export async function getClientWithStats(id: string): Promise<ClientWithStats | null> {
+  const supabase = createClient()
+  const [{ data: client }, { data: orders }, { data: payments }] = await Promise.all([
+    supabase.from('clients').select('*').eq('id', id).single(),
+    supabase.from('orders').select('*').eq('client_id', id).order('created_at', { ascending: false }),
+    supabase.from('debt_payments').select('order_id, amount'),
+  ])
+  if (!client) return null
+
+  const paidByOrder = new Map<string, number>()
+  for (const p of payments ?? []) {
+    paidByOrder.set(p.order_id, (paidByOrder.get(p.order_id) ?? 0) + p.amount)
+  }
+
+  const co = orders ?? []
+  const totalSpent = co.reduce((s, o) => s + calcEffective(o), 0)
+  const debtAmount = co
+    .filter(o => o.status === 'debt' || o.status === 'partial')
+    .reduce((s, o) => s + Math.max(0, calcEffective(o) - (paidByOrder.get(o.id) ?? 0)), 0)
+
+  return { ...client, orderCount: co.length, totalSpent, lastOrderAt: co[0]?.created_at ?? null, debtAmount }
+}
+
+export async function getClientOrders(clientId: string): Promise<OrderRow[]> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('orders')
+    .select('*')
+    .eq('client_id', clientId)
+    .order('created_at', { ascending: false })
+  return data ?? []
+}
+
+export type DebtorEntry = {
+  clientId: string | null
+  clientName: string
+  totalDebt: number
+  lastOrderAt: string
+  orderCount: number
+}
+
+export async function getDebtors(): Promise<DebtorEntry[]> {
+  const supabase = createClient()
+  const [{ data: orders }, { data: payments }] = await Promise.all([
+    supabase
+      .from('orders')
+      .select('id, client_id, client_name_raw, created_at, calculated_total, discount_percent, manual_total, status')
+      .in('status', ['debt', 'partial'])
+      .order('created_at', { ascending: false }),
+    supabase.from('debt_payments').select('order_id, amount'),
+  ])
+
+  const paidByOrder = new Map<string, number>()
+  for (const p of payments ?? []) {
+    paidByOrder.set(p.order_id, (paidByOrder.get(p.order_id) ?? 0) + p.amount)
+  }
+
+  const byClient = new Map<string, { clientId: string | null; name: string; debt: number; lastAt: string; count: number }>()
+  for (const o of orders ?? []) {
+    const key = o.client_id ?? `raw:${o.client_name_raw ?? 'unknown'}`
+    const name = o.client_name_raw ?? 'Неизвестный'
+    const remaining = Math.max(0, calcEffective(o) - (paidByOrder.get(o.id) ?? 0))
+    if (remaining <= 0) continue
+    const e = byClient.get(key)
+    if (e) { e.debt += remaining; e.count++; if (o.created_at > e.lastAt) e.lastAt = o.created_at }
+    else byClient.set(key, { clientId: o.client_id, name, debt: remaining, lastAt: o.created_at, count: 1 })
+  }
+
+  return Array.from(byClient.values())
+    .sort((a, b) => b.debt - a.debt)
+    .map(e => ({ clientId: e.clientId, clientName: e.name, totalDebt: e.debt, lastOrderAt: e.lastAt, orderCount: e.count }))
+}

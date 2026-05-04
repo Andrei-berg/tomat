@@ -1,7 +1,7 @@
 import { verifySession, getTodayPrices } from '@/lib/dal'
 import { createClient } from '@/lib/supabase/server'
 import PricesForm from '@/components/ui/prices-form'
-import NavBar from '@/components/ui/nav-bar'
+import BottomNav from '@/components/ui/bottom-nav'
 
 export default async function PricesPage() {
   await verifySession()
@@ -29,8 +29,7 @@ export default async function PricesPage() {
         fontFamily: 'var(--font-geist-sans)',
       }}
     >
-      <div style={{ maxWidth: '480px', margin: '0 auto', padding: '0 20px 52px' }}>
-        <NavBar />
+      <div style={{ maxWidth: '480px', margin: '0 auto', padding: '0 20px', paddingBottom: 'calc(var(--mk-nav-h) + 32px)' }}>
 
         {/* ── Page header ──────────────────────────────── */}
         <header style={{ paddingBottom: '24px' }}>
@@ -73,6 +72,7 @@ export default async function PricesPage() {
           <PricesForm products={products ?? []} priceMap={priceMap} />
         </main>
       </div>
+      <BottomNav />
     </div>
   )
 }

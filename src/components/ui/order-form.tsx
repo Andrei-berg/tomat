@@ -79,11 +79,13 @@ interface Product {
 interface Props {
   products: Product[]
   priceMap: Record<string, number>
+  initialClientId?: string
+  initialClientName?: string
 }
 
 /* ── Component ────────────────────────────────────────────────────────────── */
 
-export default function OrderForm({ products, priceMap }: Props) {
+export default function OrderForm({ products, priceMap, initialClientId, initialClientName }: Props) {
   /* ── State ── */
   const [items, setItems] = useState<ItemsState>(
     Object.fromEntries(products.map(p => [p.id, { boxes: '', weight: '' }])),
@@ -91,9 +93,11 @@ export default function OrderForm({ products, priceMap }: Props) {
   const [discountPct, setDiscountPct] = useState('')
   const [manualTotal, setManualTotal] = useState('')
   const [paymentType, setPaymentType] = useState<'cash' | 'card' | 'debt'>('cash')
-  const [clientQuery, setClientQuery] = useState('')
+  const [clientQuery, setClientQuery] = useState(initialClientName ?? '')
   const [clientResults, setClientResults] = useState<ClientResult[]>([])
-  const [selectedClient, setSelectedClient] = useState<ClientResult | null>(null)
+  const [selectedClient, setSelectedClient] = useState<ClientResult | null>(
+    initialClientId && initialClientName ? { id: initialClientId, name: initialClientName } : null,
+  )
   const [showDropdown, setShowDropdown] = useState(false)
   const [clientCreating, setClientCreating] = useState(false)
   const [isPending, startTransition] = useTransition()
@@ -731,6 +735,7 @@ export default function OrderForm({ products, priceMap }: Props) {
             width: '100%',
             height: '60px',
             borderRadius: '16px',
+            marginBottom: '8px',
             background: canSave
               ? 'linear-gradient(135deg, var(--mk-accent) 0%, var(--mk-accent-hi) 100%)'
               : 'var(--mk-card-fill)',
