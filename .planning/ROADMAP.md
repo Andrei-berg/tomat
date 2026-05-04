@@ -120,7 +120,13 @@ Plans:
   2. Пользователь видит таблицу по каждому товару: ящики, кг и сумма за период
   3. Пользователь нажимает «Экспорт Excel» — скачивается .xlsx файл с числовыми ячейками (суммы считаются в Excel)
   4. Пользователь нажимает «Экспорт PDF» — скачивается читаемый PDF с таблицами отчёта
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Install exceljs + @react-pdf/renderer + DAL getReportData function
+- [ ] 05-02-PLAN.md — /report page (Server Component) + ReportForm (Client Component) + NavBar update
+- [ ] 05-03-PLAN.md — GET /api/report/excel + GET /api/report/pdf Route Handlers
+- [ ] 05-04-PLAN.md — Browser verification checkpoint (all 4 REPORT requirements)
 
 ## Progress
 
@@ -134,4 +140,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 3. Orders | 3/4 | In Progress|  |
 | 3.1. Navigation & Auth UX | 2/2 | Complete   | 2026-05-04 |
 | 4. Debt Management | 0/TBD | Not started | - |
-| 5. Reports & Export | 0/TBD | Not started | - |
+| 5. Reports & Export | 0/4 | Not started | - |
