@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-05-04T18:17:31.474Z"
+last_updated: "2026-05-04T18:21:20.140Z"
 progress:
   total_phases: 6
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 16
-  completed_plans: 15
+  completed_plans: 16
 ---
 
 # Project State
@@ -58,6 +58,7 @@ Progress: [█████████░] 93%
 | Phase 04 P02 | 2 | 2 tasks | 2 files |
 | Phase 04 P03 | ~20 | 2 tasks | 2 files |
 | Phase 04.1-partial-payments-at-order-creation P01 | 1 | 1 tasks | 1 files |
+| Phase 04.1-partial-payments-at-order-creation P02 | 2 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -102,6 +103,8 @@ Recent decisions affecting current work:
 - [Phase 04.1-partial-payments-at-order-creation]: 04.1-01: Prepayment is best-effort — a failed debt_payments insert logs silently and order creation succeeds; seller records payment later via /debts/[clientId]
 - [Phase 04.1-partial-payments-at-order-creation]: 04.1-01: Server caps safeAmount = min(prepaymentRaw, effectiveTotal) to prevent overpayment regardless of UI input
 - [Phase 04.1-partial-payments-at-order-creation]: 04.1-01: prepayment_type defaults to 'cash' for any value other than 'card' (explicit guard in createOrder action)
+- [Phase 04.1-02]: Prepayment amount input max set to effective total — defence-in-depth alongside server-side Math.min cap from 04.1-01
+- [Phase 04.1-02]: Prepayment section not shown on success screen — RESEARCH explicitly marked this non-critical
 
 ### Roadmap Evolution
 
