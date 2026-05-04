@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 3.1 of 3.1 (Navigation & Auth UX gap closure)
-Plan: 2 of 2 complete (03.1-01 done; 03.1-02 done — pending browser verify)
-Status: Phase 3.1 awaiting browser verification checkpoint — Task 1 complete, Task 2 (browser verify) pending user confirmation
-Last activity: 2026-05-04 — Plan 03.1-02 Task 1 complete: PricesForm auto-hide removed, «Создать заказ» Link added
+Plan: 2 of 2 complete (03.1-01 done; 03.1-02 done — browser verify approved)
+Status: Phase 3.1 complete — all tasks done, browser verify passed
+Last activity: 2026-05-04 — Plan 03.1-02 Task 2 complete: browser verify approved — NavBar, logout, «Создать заказ» button all confirmed working
 
 Progress: [████████░░] 80%
 
@@ -100,6 +100,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-30
-Stopped at: Completed 03-02-PLAN.md — OrderForm 'use client' component (live totals, discount priority, debounced client search, canSave). Phase 3 plan 02 done.
+Last session: 2026-05-04
+Stopped at: Completed 03.1-02-PLAN.md — PricesForm auto-hide removed, «Создать заказ» button added, browser verify approved. Phase 3.1 complete.
 Resume file: None
