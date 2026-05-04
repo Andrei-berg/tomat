@@ -1,5 +1,6 @@
 'use client'
 import { useActionState, useState, useEffect } from 'react'
+import Link from 'next/link'
 import { savePrices, copyYesterdayPrices } from '@/app/actions/prices'
 
 interface Product { id: string; name: string; sort_order: number }
@@ -53,8 +54,6 @@ export default function PricesForm({ products, priceMap }: Props) {
   useEffect(() => {
     if (saveState?.success) {
       setShowSuccess(true)
-      const t = setTimeout(() => setShowSuccess(false), 2600)
-      return () => clearTimeout(t)
     }
   }, [saveState])
 
@@ -245,25 +244,52 @@ export default function PricesForm({ products, priceMap }: Props) {
       )}
 
       {showSuccess && (
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          padding: '12px 16px',
-          marginBottom: '12px',
-          borderRadius: '12px',
-          background: 'var(--mk-ok-bg)',
-          border: '1px solid var(--mk-ok-border)',
-          color: 'var(--mk-ok-text)',
-          fontSize: '14px',
-          fontWeight: 600,
-          animationName: 'mkPop',
-          animationDuration: '0.3s',
-          animationFillMode: 'both',
-        }}>
-          <CheckIcon />
-          Цены сохранены
-        </div>
+        <>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '12px 16px',
+            marginBottom: '12px',
+            borderRadius: '12px',
+            background: 'var(--mk-ok-bg)',
+            border: '1px solid var(--mk-ok-border)',
+            color: 'var(--mk-ok-text)',
+            fontSize: '14px',
+            fontWeight: 600,
+            animationName: 'mkPop',
+            animationDuration: '0.3s',
+            animationFillMode: 'both',
+          }}>
+            <CheckIcon />
+            Цены сохранены
+          </div>
+          <Link
+            href="/orders/new"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              height: '50px',
+              borderRadius: '14px',
+              background: 'linear-gradient(135deg, var(--mk-accent) 0%, var(--mk-accent-hi) 100%)',
+              color: 'white',
+              fontSize: '15px',
+              fontWeight: 600,
+              textDecoration: 'none',
+              letterSpacing: '-0.01em',
+              fontFamily: 'var(--font-geist-sans)',
+              boxShadow: '0 6px 24px var(--mk-accent-glow)',
+              animationName: 'mkUp',
+              animationDuration: '0.3s',
+              animationFillMode: 'both',
+              marginBottom: '10px',
+            }}
+          >
+            Создать заказ →
+          </Link>
+        </>
       )}
 
       {/* ── Action buttons ────────────────────────────── */}
