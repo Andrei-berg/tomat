@@ -10,7 +10,7 @@
 - [x] **AUTH-01**: Неаутентифицированный пользователь перенаправляется на /login с любой страницы
 - [x] **AUTH-02**: Пользователь входит с одним общим паролем
 - [x] **AUTH-03**: Сессия сохраняется после обновления браузера
-- [ ] **AUTH-04**: Пользователь может выйти из системы
+- [x] **AUTH-04**: Пользователь может выйти из системы
 
 ### Prices
 
@@ -85,7 +85,7 @@
 | AUTH-01 | Phase 1 | Complete |
 | AUTH-02 | Phase 1 | Complete |
 | AUTH-03 | Phase 1 | Complete |
-| AUTH-04 | Phase 3.1 | Pending |
+| AUTH-04 | Phase 3.1 | Complete |
 | PRICE-01 | Phase 2 | Complete |
 | PRICE-02 | Phase 2 | Complete |
 | CLIENT-01 | Phase 3 | Complete |

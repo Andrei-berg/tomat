@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-05-01T21:21:13.024Z"
+last_updated: "2026-05-04T06:52:06.061Z"
 progress:
-  total_phases: 3
+  total_phases: 4
   completed_phases: 3
-  total_plans: 9
-  completed_plans: 9
+  total_plans: 11
+  completed_plans: 10
 ---
 
 # Project State
@@ -22,10 +22,10 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 ## Current Position
 
-Phase: 3 of 5 (Orders)
-Plan: 4 of 4 in current phase (03-01, 03-02, 03-03 complete; 03-04 next)
-Status: Phase 3 In Progress — DAL + Server Actions + OrderForm + /orders + /orders/[id] done; next: 03-04
-Last activity: 2026-04-30 — Plan 03-03 complete: /orders and /orders/[id] Server Component pages
+Phase: 3.1 of 3.1 (Navigation & Auth UX gap closure)
+Plan: 1 of 2 complete (03.1-01 done; 03.1-02 next)
+Status: Phase 3.1 In Progress — NavBar + logout on 4 pages done; next: 03.1-02 PricesForm
+Last activity: 2026-05-04 — Plan 03.1-01 complete: NavBar component + 4 protected pages updated
 
 Progress: [██████░░░░] 60%
 
@@ -52,6 +52,7 @@ Progress: [██████░░░░] 60%
 | Phase 03-orders P01 | 8 | 2 tasks | 2 files |
 | Phase 03-orders P02 | 2 | 1 task | 1 file |
 | Phase 03-orders P03 | 2 | 2 tasks | 2 files |
+| Phase 03.1-navigation-auth-ux P01 | 15 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,8 @@ Recent decisions affecting current work:
 - 03-02: formKey state increment used to reset form + useActionState after successful order — remounts form subtree cleanly
 - [Phase 03-orders]: searchParams and params are Promise in Next.js 16 — must await before reading
 - [Phase 03-orders]: 03-03: line_total used directly from order_items (GENERATED ALWAYS AS stored column) — no recalculation in UI
+- [Phase 03.1-01]: NavBar replaces paddingTop: 48px header spacing — component itself provides top padding via paddingTop: 20px
+- [Phase 03.1-01]: form action={logout} pattern for logout — works without JS (progressive enhancement)
 
 ### Pending Todos
 
