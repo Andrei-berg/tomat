@@ -94,7 +94,12 @@ Plans:
   1. Пользователь открывает /debts и видит только клиентов с остатком долга > 0; баланс совпадает с суммой неоплаченных заказов минус погашения
   2. Пользователь фиксирует частичное погашение — баланс клиента уменьшается немедленно
   3. Пользователь открывает историю долга клиента и видит все погашения с датами
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — DAL layer: export calcEffective, add getClientDebtOrders + getDebtPayments
+- [ ] 04-02-PLAN.md — Write path: recordPayment Server Action + PaymentForm Client Component
+- [ ] 04-03-PLAN.md — UI: /debts/[clientId] detail page + clickable debtors list + browser verify
 
 ### Phase 5: Reports & Export
 **Goal**: Владелец может посмотреть выручку и объёмы за произвольный период и скачать отчёт в Excel или PDF
