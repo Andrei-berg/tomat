@@ -89,7 +89,7 @@ export async function getOrderWithItems(id: string): Promise<OrderWithItems | nu
 
 // ── Client helpers ─────────────────────────────────────────────────────────
 
-function calcEffective(o: {
+export function calcEffective(o: {
   calculated_total: number | null
   discount_percent: number | null
   manual_total: number | null
@@ -205,4 +205,67 @@ export async function getDebtors(): Promise<DebtorEntry[]> {
   return Array.from(byClient.values())
     .sort((a, b) => b.debt - a.debt)
     .map(e => ({ clientId: e.clientId, clientName: e.name, totalDebt: e.debt, lastOrderAt: e.lastAt, orderCount: e.count }))
+}
+
+export type DebtOrderEntry = {
+  orderId: string
+  createdAt: string
+  effectiveTotal: number
+  paidTotal: number
+  remaining: number
+  status: 'debt' | 'partial'
+}
+
+export async function getClientDebtOrders(clientId: string): Promise<DebtOrderEntry[]> {
+  const supabase = createClient()
+  const { data: orders } = await supabase
+    .from('orders')
+    .select('id, created_at, calculated_total, discount_percent, manual_total, status')
+    .eq('client_id', clientId)
+    .in('status', ['debt', 'partial'])
+    .order('created_at', { ascending: false })
+
+  if (!orders || orders.length === 0) return []
+
+  const orderIds = orders.map(o => o.id)
+  const { data: payments } = await supabase
+    .from('debt_payments')
+    .select('order_id, amount')
+    .in('order_id', orderIds)
+
+  const paidByOrder = new Map<string, number>()
+  for (const p of payments ?? []) {
+    paidByOrder.set(p.order_id, (paidByOrder.get(p.order_id) ?? 0) + p.amount)
+  }
+
+  return orders.map(o => {
+    const eff = calcEffective(o)
+    const paid = paidByOrder.get(o.id) ?? 0
+    return {
+      orderId: o.id,
+      createdAt: o.created_at,
+      effectiveTotal: eff,
+      paidTotal: paid,
+      remaining: Math.max(0, eff - paid),
+      status: o.status as 'debt' | 'partial',
+    }
+  })
+}
+
+export type DebtPaymentRow = {
+  id: string
+  amount: number
+  paid_at: string
+  payment_type: 'cash' | 'card'
+  notes: string | null
+}
+
+export async function getDebtPayments(orderId: string): Promise<DebtPaymentRow[]> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('debt_payments')
+    .select('id, amount, paid_at, payment_type, notes')
+    .eq('order_id', orderId)
+    .order('paid_at', { ascending: true })
+  return (data ?? []) as DebtPaymentRow[]
 }
