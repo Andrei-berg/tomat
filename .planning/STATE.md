@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-05-04T18:37:38.007Z"
+last_updated: "2026-05-04T19:57:28.361Z"
 progress:
-  total_phases: 6
+  total_phases: 7
   completed_phases: 6
-  total_plans: 16
-  completed_plans: 16
+  total_plans: 20
+  completed_plans: 17
 ---
 
 # Project State
@@ -22,10 +22,10 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 ## Current Position
 
-Phase: 4.1 of 5 (Partial Payments at Order Creation) — COMPLETE
-Plan: 2 of 2 complete (04.1-02 done — OrderForm prepayment UI browser verified)
-Status: Phase 04.1 complete — ready for Phase 05 (Reports)
-Last activity: 2026-05-04 — Plan 04.1-02 complete: OrderForm extended with optional Предоплата section, browser verification approved
+Phase: 5 of 5 (Reports & Export) — In Progress
+Plan: 1 of 4 complete (05-01 done — exceljs+@react-pdf/renderer installed, getReportData added to dal.ts)
+Status: Phase 05 in progress — Plan 05-01 complete, ready for Plan 05-02 (Excel Route Handler)
+Last activity: 2026-05-04 — Plan 05-01 complete: report packages installed, DAL function getReportData added
 
 Progress: [██████████] 100%
 
@@ -59,6 +59,7 @@ Progress: [██████████] 100%
 | Phase 04 P03 | ~20 | 2 tasks | 2 files |
 | Phase 04.1-partial-payments-at-order-creation P01 | 1 | 1 tasks | 1 files |
 | Phase 04.1-partial-payments-at-order-creation P02 | 15 | 2 tasks | 1 files |
+| Phase 05-reports-export P01 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -105,6 +106,7 @@ Recent decisions affecting current work:
 - [Phase 04.1-partial-payments-at-order-creation]: 04.1-01: prepayment_type defaults to 'cash' for any value other than 'card' (explicit guard in createOrder action)
 - [Phase 04.1-02]: Prepayment amount input max set to effective total — defence-in-depth alongside server-side Math.min cap from 04.1-01
 - [Phase 04.1-02]: Prepayment section not shown on success screen — RESEARCH explicitly marked this non-critical
+- [Phase 05-reports-export]: getReportData fetches all debt_payments (no date filter) and maps to orders in period — ensures payments received after period end are captured
 
 ### Roadmap Evolution
 
@@ -117,11 +119,11 @@ None yet.
 ### Blockers/Concerns
 
 - Phase 3 (Orders): Most complex UI — useFieldArray + live currency.js arithmetic + mobile keyboard behavior. Research flags this as needing a focused implementation spike before planning.
-- Phase 5 (Reports): ExcelJS + @react-pdf/renderer binary Route Handler patterns need verification before planning.
+- Phase 5 (Reports): @react-pdf/renderer renderToBuffer App Router stability in Next.js 16 — test early in 05-03 plan.
 - Phase 1: Decide on rate limiting for login endpoint (Upstash Redis vs. accept low risk for internal-only deployment).
 
 ## Session Continuity
 
 Last session: 2026-05-04
-Stopped at: Completed 04.1-02-PLAN.md — OrderForm prepayment UI browser verified; Phase 04.1 fully complete. Phase 05 (Reports) is next.
+Stopped at: Completed 05-01-PLAN.md — exceljs+@react-pdf/renderer installed, getReportData(from,to) added to dal.ts; ready for 05-02 (Excel export Route Handler).
 Resume file: None
