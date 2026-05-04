@@ -1,8 +1,8 @@
 import { verifySession, hasTodayPrices, getTodayPrices } from '@/lib/dal'
 import { createClient as createSupabaseClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 import OrderForm from '@/components/ui/order-form'
+import NavBar from '@/components/ui/nav-bar'
 
 export default async function NewOrderPage() {
   await verifySession()
@@ -29,38 +29,18 @@ export default async function NewOrderPage() {
       }}
     >
       <div style={{ maxWidth: '480px', margin: '0 auto', padding: '0 20px 52px' }}>
-        <div
+        <NavBar />
+        <h1
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '24px 0 20px',
+            margin: '4px 0 20px',
+            fontSize: '22px',
+            fontWeight: 700,
+            color: 'var(--mk-text)',
+            letterSpacing: '-0.02em',
           }}
         >
-          <h1
-            style={{
-              margin: 0,
-              fontSize: '22px',
-              fontWeight: 700,
-              color: 'var(--mk-text)',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            Новый заказ
-          </h1>
-          <Link
-            href="/orders"
-            style={{
-              fontSize: '14px',
-              fontWeight: 500,
-              color: 'var(--mk-text-2)',
-              textDecoration: 'none',
-              padding: '6px 0',
-            }}
-          >
-            ← Заказы
-          </Link>
-        </div>
+          Новый заказ
+        </h1>
         <OrderForm products={products ?? []} priceMap={priceMap} />
       </div>
     </div>

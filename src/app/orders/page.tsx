@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { verifySession, getOrdersByDate } from '@/lib/dal'
 import type { OrderRow } from '@/lib/dal'
+import NavBar from '@/components/ui/nav-bar'
 
 function formatRub(amount: number): string {
   return amount.toLocaleString('ru-RU', {
@@ -85,9 +86,10 @@ export default async function OrdersPage({
       }}
     >
       <div style={{ maxWidth: '480px', margin: '0 auto', padding: '0 20px 52px' }}>
+        <NavBar />
 
         {/* ── Header ─────────────────────────────────── */}
-        <header style={{ paddingTop: '48px', paddingBottom: '24px' }}>
+        <header style={{ paddingBottom: '24px' }}>
           <p style={{
             margin: '0 0 10px',
             fontSize: '10px',

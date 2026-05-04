@@ -1,7 +1,7 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { verifySession, getOrderWithItems } from '@/lib/dal'
 import type { OrderWithItems } from '@/lib/dal'
+import NavBar from '@/components/ui/nav-bar'
 
 function formatRub(amount: number): string {
   return amount.toLocaleString('ru-RU', {
@@ -85,25 +85,10 @@ export default async function OrderDetailPage({
       }}
     >
       <div style={{ maxWidth: '480px', margin: '0 auto', padding: '0 20px 52px' }}>
+        <NavBar />
 
         {/* ── Header ─────────────────────────────────── */}
-        <header style={{ paddingTop: '48px', paddingBottom: '24px' }}>
-          <Link
-            href="/orders"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              fontSize: '13px',
-              fontWeight: 500,
-              color: 'var(--mk-text-2)',
-              textDecoration: 'none',
-              marginBottom: '18px',
-            }}
-          >
-            ← Назад
-          </Link>
-
+        <header style={{ paddingBottom: '24px' }}>
           <p style={{
             margin: '0 0 10px',
             fontSize: '10px',
