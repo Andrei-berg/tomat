@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - DB schema + RLS + авторизация на общем пароле + проектный скаффолдинг
 - [ ] **Phase 2: Daily Prices** - Экран установки цен на день для всех 6 товаров
 - [ ] **Phase 3: Orders** - Форма создания заказа и список заказов — ядро ценности продукта
-- [ ] **Phase 3.1: Navigation & Auth UX** *(INSERTED — Gap Closure)* - Logout-кнопка + навигация между разделами + возврат из /prices
+- [x] **Phase 3.1: Navigation & Auth UX** *(INSERTED — Gap Closure)* - Logout-кнопка + навигация между разделами + возврат из /prices (completed 2026-05-04)
 - [ ] **Phase 4: Debt Management** - Экран долгов с вычисляемым балансом и фиксацией погашений
 - [ ] **Phase 5: Reports & Export** - Отчёт за период с экспортом в Excel и PDF
 
@@ -117,6 +117,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 3/3 | Complete | 2026-04-29 |
 | 2. Daily Prices | 1/2 | In Progress|  |
 | 3. Orders | 3/4 | In Progress|  |
-| 3.1. Navigation & Auth UX | 0/2 | Not started | - |
+| 3.1. Navigation & Auth UX | 2/2 | Complete   | 2026-05-04 |
 | 4. Debt Management | 0/TBD | Not started | - |
 | 5. Reports & Export | 0/TBD | Not started | - |

@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 3.1 of 3.1 (Navigation & Auth UX gap closure)
-Plan: 1 of 2 complete (03.1-01 done; 03.1-02 next)
-Status: Phase 3.1 In Progress — NavBar + logout on 4 pages done; next: 03.1-02 PricesForm
-Last activity: 2026-05-04 — Plan 03.1-01 complete: NavBar component + 4 protected pages updated
+Plan: 2 of 2 complete (03.1-01 done; 03.1-02 done — pending browser verify)
+Status: Phase 3.1 awaiting browser verification checkpoint — Task 1 complete, Task 2 (browser verify) pending user confirmation
+Last activity: 2026-05-04 — Plan 03.1-02 Task 1 complete: PricesForm auto-hide removed, «Создать заказ» Link added
 
-Progress: [██████░░░░] 60%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Progress: [██████░░░░] 60%
 | Phase 03-orders P02 | 2 | 1 task | 1 file |
 | Phase 03-orders P03 | 2 | 2 tasks | 2 files |
 | Phase 03.1-navigation-auth-ux P01 | 15 | 2 tasks | 5 files |
+| Phase 03.1-navigation-auth-ux P02 | 5 | 1 task | 1 file |
 
 ## Accumulated Context
 
@@ -85,6 +86,7 @@ Recent decisions affecting current work:
 - [Phase 03-orders]: 03-03: line_total used directly from order_items (GENERATED ALWAYS AS stored column) — no recalculation in UI
 - [Phase 03.1-01]: NavBar replaces paddingTop: 48px header spacing — component itself provides top padding via paddingTop: 20px
 - [Phase 03.1-01]: form action={logout} pattern for logout — works without JS (progressive enhancement)
+- [Phase 03.1-02]: showSuccess resets only on next saveState change (not via setTimeout) — user has unlimited time to click «Создать заказ»
 
 ### Pending Todos
 
