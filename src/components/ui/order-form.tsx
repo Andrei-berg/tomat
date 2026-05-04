@@ -107,6 +107,8 @@ export default function OrderForm({ products, priceMap, initialClientId, initial
   )
   const [formKey, setFormKey] = useState(0)
   const [formSubmitted, setFormSubmitted] = useState(false)
+  const [prepaymentAmount, setPrepaymentAmount] = useState('')
+  const [prepaymentType, setPrepaymentType] = useState<'cash' | 'card'>('cash')
 
   /* ── Derived values ── */
   const calculated = calcTotal(items, priceMap)
@@ -164,6 +166,10 @@ export default function OrderForm({ products, priceMap, initialClientId, initial
       fd.set(`boxes_${pid}`, item.boxes || '0')
       fd.set(`price_${pid}`, String(priceMap[pid] ?? 0))
     }
+    if (paymentType === 'debt' && prepaymentAmount && parseFloat(prepaymentAmount) > 0) {
+      fd.set('prepayment_amount', prepaymentAmount)
+      fd.set('prepayment_type', prepaymentType)
+    }
     return fd
   }
 
@@ -191,6 +197,8 @@ export default function OrderForm({ products, priceMap, initialClientId, initial
     setClientResults([])
     setSelectedClient(null)
     setShowDropdown(false)
+    setPrepaymentAmount('')
+    setPrepaymentType('cash')
     setFormKey(k => k + 1)
   }
 
@@ -671,6 +679,81 @@ export default function OrderForm({ products, priceMap, initialClientId, initial
           </div>
         )}
       </div>
+
+      {/* ── Section 4.5: Prepayment ────────────────────────────────────── */}
+      {paymentType === 'debt' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--mk-text-3)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            Предоплата <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>(необязательно)</span>
+          </span>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            {/* Amount input */}
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', fontSize: '11px', color: 'var(--mk-text-3)', fontWeight: 500, marginBottom: '6px' }}>
+                Сумма ₽
+              </label>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                max={effective}
+                value={prepaymentAmount}
+                onChange={e => setPrepaymentAmount(e.target.value)}
+                inputMode="decimal"
+                placeholder={`до ${formatRub(effective)}`}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  height: '44px',
+                  padding: '0 12px',
+                  fontSize: '17px',
+                  fontWeight: 600,
+                  color: 'var(--mk-text)',
+                  background: 'var(--mk-surface)',
+                  border: '1.5px solid var(--mk-border)',
+                  borderRadius: '12px',
+                  outline: 'none',
+                  fontFamily: 'var(--font-geist-sans)',
+                  boxSizing: 'border-box',
+                }}
+              />
+            </div>
+            {/* Type selector */}
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', fontSize: '11px', color: 'var(--mk-text-3)', fontWeight: 500, marginBottom: '6px' }}>
+                Способ
+              </label>
+              <div style={{ display: 'flex', gap: '6px', height: '44px' }}>
+                {(['cash', 'card'] as const).map(pt => {
+                  const active = prepaymentType === pt
+                  return (
+                    <button
+                      key={pt}
+                      type="button"
+                      onClick={() => setPrepaymentType(pt)}
+                      style={{
+                        flex: 1,
+                        height: '44px',
+                        borderRadius: '12px',
+                        border: active ? '1.5px solid var(--mk-accent)' : '1.5px solid var(--mk-border)',
+                        background: active ? 'rgba(200,67,26,0.1)' : 'var(--mk-surface)',
+                        color: active ? 'var(--mk-accent)' : 'var(--mk-text-2)',
+                        fontSize: '13px',
+                        fontWeight: active ? 700 : 500,
+                        cursor: 'pointer',
+                        transition: 'all 0.15s',
+                        fontFamily: 'var(--font-geist-sans)',
+                      }}
+                    >
+                      {pt === 'cash' ? 'Нал' : 'Карта'}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Section 5: Total + Save ─────────────────────────────────────── */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
