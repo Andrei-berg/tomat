@@ -84,19 +84,18 @@ export default async function DebtorsPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {debtors.map((d, i) => {
                 const inits = initials(d.clientName)
-                return (
-                  <div
-                    key={`${d.clientId}-${i}`}
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: '14px',
-                      padding: '14px 16px', borderRadius: '14px',
-                      background: 'var(--mk-card)', border: '1px solid var(--mk-border)',
-                      borderLeft: '3px solid var(--mk-amber)',
-                      animation: 'mkUp 0.22s both',
-                      animationDelay: `${i * 0.04}s`,
-                      textDecoration: 'none',
-                    }}
-                  >
+                const cardStyle = {
+                  display: 'flex', alignItems: 'center', gap: '14px',
+                  padding: '14px 16px', borderRadius: '14px',
+                  background: 'var(--mk-card)', border: '1px solid var(--mk-border)',
+                  borderLeft: '3px solid var(--mk-amber)',
+                  animation: 'mkUp 0.22s both',
+                  animationDelay: `${i * 0.04}s`,
+                  textDecoration: 'none',
+                  cursor: d.clientId ? 'pointer' : 'default',
+                }
+                const cardContent = (
+                  <>
                     {/* Avatar */}
                     <div style={{
                       width: '44px', height: '44px', borderRadius: '12px', flexShrink: 0,
@@ -109,17 +108,9 @@ export default async function DebtorsPage() {
 
                     {/* Info */}
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      {d.clientId ? (
-                        <Link href={`/clients/${d.clientId}`} style={{ textDecoration: 'none' }}>
-                          <p style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--mk-text)', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                            {d.clientName}
-                          </p>
-                        </Link>
-                      ) : (
-                        <p style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--mk-text)', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {d.clientName}
-                        </p>
-                      )}
+                      <p style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--mk-text)', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {d.clientName}
+                      </p>
                       <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
                         <span style={{ fontSize: '12px', color: 'var(--mk-text-2)' }}>
                           {d.orderCount} заказ{d.orderCount === 1 ? '' : d.orderCount < 5 ? 'а' : 'ов'}
@@ -135,18 +126,23 @@ export default async function DebtorsPage() {
                       <p style={{ margin: 0, fontSize: '18px', fontWeight: 800, color: 'var(--mk-amber)', letterSpacing: '-0.03em', fontFamily: 'var(--font-geist-mono)' }}>
                         {rub(d.totalDebt)}
                       </p>
-                      {d.clientId && (
-                        <Link
-                          href={`/orders/new?clientId=${d.clientId}&clientName=${encodeURIComponent(d.clientName)}`}
-                          style={{
-                            fontSize: '11px', color: 'var(--mk-text-3)', textDecoration: 'none',
-                            marginTop: '4px', display: 'block',
-                          }}
-                        >
-                          + заказ
-                        </Link>
-                      )}
                     </div>
+                  </>
+                )
+                return d.clientId ? (
+                  <Link
+                    key={`${d.clientId}-${i}`}
+                    href={`/debts/${d.clientId}`}
+                    style={cardStyle}
+                  >
+                    {cardContent}
+                  </Link>
+                ) : (
+                  <div
+                    key={`${d.clientId}-${i}`}
+                    style={cardStyle}
+                  >
+                    {cardContent}
                   </div>
                 )
               })}
