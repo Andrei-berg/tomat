@@ -101,6 +101,16 @@ Plans:
 - [ ] 04-02-PLAN.md — Write path: recordPayment Server Action + PaymentForm Client Component
 - [ ] 04-03-PLAN.md — UI: /debts/[clientId] detail page + clickable debtors list + browser verify
 
+### Phase 04.1: Partial Payments at Order Creation (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Requirements**: TBD
+**Depends on:** Phase 4
+**Plans:** 1/2 plans executed
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 04.1 to break down)
+
 ### Phase 5: Reports & Export
 **Goal**: Владелец может посмотреть выручку и объёмы за произвольный период и скачать отчёт в Excel или PDF
 **Depends on**: Phase 4

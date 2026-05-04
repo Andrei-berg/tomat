@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-05-04T12:35:00.962Z"
+last_updated: "2026-05-04T18:17:31.474Z"
 progress:
-  total_phases: 5
-  completed_phases: 4
-  total_plans: 14
-  completed_plans: 13
+  total_phases: 6
+  completed_phases: 5
+  total_plans: 16
+  completed_plans: 15
 ---
 
 # Project State
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 ## Current Position
 
-Phase: 4 of 5 (Debt Management)
-Plan: 3 of 3 complete (04-01 done; 04-02 done; 04-03 done — browser verify approved)
-Status: Phase 4 complete — all tasks done, browser verify passed
-Last activity: 2026-05-04 — Plan 04-03 Task 3 complete: browser verify approved — debt detail page, clickable debtors, payment recording all confirmed working
+Phase: 4.1 of 5 (Partial Payments at Order Creation)
+Plan: 1 of 2 complete (04.1-01 done — createOrder extended with prepayment handling)
+Status: Phase 4.1 in progress — plan 01 done, plan 02 (UI fields) remaining
+Last activity: 2026-05-04 — Plan 04.1-01 complete: createOrder extended with best-effort prepayment insert + orders.status update
 
-Progress: [█████████░] 90%
+Progress: [█████████░] 93%
 
 ## Performance Metrics
 
@@ -57,6 +57,7 @@ Progress: [█████████░] 90%
 | Phase 04-debt-management P01 | 1 | 1 tasks | 1 files |
 | Phase 04 P02 | 2 | 2 tasks | 2 files |
 | Phase 04 P03 | ~20 | 2 tasks | 2 files |
+| Phase 04.1-partial-payments-at-order-creation P01 | 1 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -98,6 +99,13 @@ Recent decisions affecting current work:
 - [Phase 04]: 04-03: Anonymous debtors (clientId=null) remain plain divs — cannot navigate to detail without clientId
 - [Phase 04]: 04-03: Nested Link tags inside card link removed — inner name link and +заказ link both dropped to avoid invalid HTML nesting
 - [Phase 04]: 04-03: Payment histories fetched in parallel via Promise.all after orders resolve (sequential dependency — need order IDs first)
+- [Phase 04.1-partial-payments-at-order-creation]: 04.1-01: Prepayment is best-effort — a failed debt_payments insert logs silently and order creation succeeds; seller records payment later via /debts/[clientId]
+- [Phase 04.1-partial-payments-at-order-creation]: 04.1-01: Server caps safeAmount = min(prepaymentRaw, effectiveTotal) to prevent overpayment regardless of UI input
+- [Phase 04.1-partial-payments-at-order-creation]: 04.1-01: prepayment_type defaults to 'cash' for any value other than 'card' (explicit guard in createOrder action)
+
+### Roadmap Evolution
+
+- Phase 04.1 inserted after Phase 4: Partial Payments at Order Creation (URGENT) — partial prepayment at order creation time was missing from Phase 03/04; needed before Reports
 
 ### Pending Todos
 
@@ -112,5 +120,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-04
-Stopped at: Completed 04-03-PLAN.md — debt detail page + clickable debtors + browser verify approved. Phase 4 complete.
+Stopped at: Completed 04.1-01-PLAN.md — createOrder extended with prepayment handling; 04.1-02 (UI fields for prepayment) is next.
 Resume file: None
