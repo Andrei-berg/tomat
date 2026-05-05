@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-05-04T19:57:28.361Z"
+last_updated: "2026-05-05T04:14:45.699Z"
 progress:
   total_phases: 7
   completed_phases: 6
   total_plans: 20
-  completed_plans: 17
+  completed_plans: 18
 ---
 
 # Project State
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 5 of 5 (Reports & Export) — In Progress
-Plan: 1 of 4 complete (05-01 done — exceljs+@react-pdf/renderer installed, getReportData added to dal.ts)
-Status: Phase 05 in progress — Plan 05-01 complete, ready for Plan 05-02 (Excel Route Handler)
-Last activity: 2026-05-04 — Plan 05-01 complete: report packages installed, DAL function getReportData added
+Plan: 2 of 4 complete (05-02 done — /report page, ReportForm component, NavBar Отчёты link)
+Status: Phase 05 in progress — Plan 05-02 complete, ready for Plan 05-03 (Excel Route Handler)
+Last activity: 2026-05-05 — Plan 05-02 complete: /report UI page, ReportForm, NavBar updated
 
 Progress: [██████████] 100%
 
@@ -60,6 +60,7 @@ Progress: [██████████] 100%
 | Phase 04.1-partial-payments-at-order-creation P01 | 1 | 1 tasks | 1 files |
 | Phase 04.1-partial-payments-at-order-creation P02 | 15 | 2 tasks | 1 files |
 | Phase 05-reports-export P01 | 2 | 2 tasks | 3 files |
+| Phase 05 P02 | 20 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -107,6 +108,7 @@ Recent decisions affecting current work:
 - [Phase 04.1-02]: Prepayment amount input max set to effective total — defence-in-depth alongside server-side Math.min cap from 04.1-01
 - [Phase 04.1-02]: Prepayment section not shown on success screen — RESEARCH explicitly marked this non-critical
 - [Phase 05-reports-export]: getReportData fetches all debt_payments (no date filter) and maps to orders in period — ensures payments received after period end are captured
+- [Phase 05-02]: Export buttons implemented as <a href download> anchor tags pointing to /api/report/{excel,pdf}?from=&to= — no JS required, native browser download
 
 ### Roadmap Evolution
 
@@ -124,6 +126,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-04
-Stopped at: Completed 05-01-PLAN.md — exceljs+@react-pdf/renderer installed, getReportData(from,to) added to dal.ts; ready for 05-02 (Excel export Route Handler).
+Last session: 2026-05-05
+Stopped at: Completed 05-02-PLAN.md — /report page, ReportForm component, NavBar Отчёты link; ready for 05-03 (Excel Route Handler).
 Resume file: None
