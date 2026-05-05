@@ -140,4 +140,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 3. Orders | 3/4 | In Progress|  |
 | 3.1. Navigation & Auth UX | 2/2 | Complete   | 2026-05-04 |
 | 4. Debt Management | 0/TBD | Not started | - |
-| 5. Reports & Export | 2/4 | In Progress|  |
+| 5. Reports & Export | 3/4 | In Progress|  |

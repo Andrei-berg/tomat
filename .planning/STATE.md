@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-05-05T04:14:45.699Z"
+last_updated: "2026-05-04T00:00:00.000Z"
 progress:
   total_phases: 7
   completed_phases: 6
   total_plans: 20
-  completed_plans: 18
+  completed_plans: 19
 ---
 
 # Project State
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 5 of 5 (Reports & Export) — In Progress
-Plan: 2 of 4 complete (05-02 done — /report page, ReportForm component, NavBar Отчёты link)
-Status: Phase 05 in progress — Plan 05-02 complete, ready for Plan 05-03 (Excel Route Handler)
-Last activity: 2026-05-05 — Plan 05-02 complete: /report UI page, ReportForm, NavBar updated
+Plan: 3 of 4 complete (05-03 done — Excel + PDF export Route Handlers)
+Status: Phase 05 in progress — Plan 05-03 complete, ready for Plan 05-04 (browser verification)
+Last activity: 2026-05-04 — Plan 05-03 complete: GET /api/report/excel and GET /api/report/pdf handlers
 
 Progress: [██████████] 100%
 
@@ -61,6 +61,7 @@ Progress: [██████████] 100%
 | Phase 04.1-partial-payments-at-order-creation P02 | 15 | 2 tasks | 1 files |
 | Phase 05-reports-export P01 | 2 | 2 tasks | 3 files |
 | Phase 05 P02 | 20 | 2 tasks | 3 files |
+| Phase 05 P03 | 10 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -109,6 +110,8 @@ Recent decisions affecting current work:
 - [Phase 04.1-02]: Prepayment section not shown on success screen — RESEARCH explicitly marked this non-critical
 - [Phase 05-reports-export]: getReportData fetches all debt_payments (no date filter) and maps to orders in period — ensures payments received after period end are captured
 - [Phase 05-02]: Export buttons implemented as <a href download> anchor tags pointing to /api/report/{excel,pdf}?from=&to= — no JS required, native browser download
+- [Phase 05-03]: route.tsx extension (not .ts) required for JSX in PDF route handler — TypeScript cannot parse JSX in .ts files
+- [Phase 05-03]: new Uint8Array(buffer) wrap for Node Buffer → Response BodyInit — Node.js Buffer not assignable to web BodyInit in this TypeScript config; Uint8Array is valid BufferSource/BodyInit
 
 ### Roadmap Evolution
 
@@ -121,11 +124,11 @@ None yet.
 ### Blockers/Concerns
 
 - Phase 3 (Orders): Most complex UI — useFieldArray + live currency.js arithmetic + mobile keyboard behavior. Research flags this as needing a focused implementation spike before planning.
-- Phase 5 (Reports): @react-pdf/renderer renderToBuffer App Router stability in Next.js 16 — test early in 05-03 plan.
+- Phase 5 (Reports): @react-pdf/renderer renderToBuffer App Router stability in Next.js 16 — RESOLVED in 05-03: build passes, no serverExternalPackages needed.
 - Phase 1: Decide on rate limiting for login endpoint (Upstash Redis vs. accept low risk for internal-only deployment).
 
 ## Session Continuity
 
-Last session: 2026-05-05
-Stopped at: Completed 05-02-PLAN.md — /report page, ReportForm component, NavBar Отчёты link; ready for 05-03 (Excel Route Handler).
+Last session: 2026-05-04
+Stopped at: Completed 05-03-PLAN.md — GET /api/report/excel and GET /api/report/pdf route handlers; ready for 05-04 (browser verification checkpoint).
 Resume file: None

@@ -47,8 +47,8 @@
 
 - [x] **REPORT-01**: Пользователь может посмотреть выручку за период с разбивкой по типам оплаты (наличные / карта / долги не получено)
 - [x] **REPORT-02**: Пользователь может посмотреть таблицу ящиков, кг и сумм по каждому товару за период
-- [ ] **REPORT-03**: Пользователь может экспортировать отчёт в Excel
-- [ ] **REPORT-04**: Пользователь может экспортировать отчёт в PDF
+- [x] **REPORT-03**: Пользователь может экспортировать отчёт в Excel
+- [x] **REPORT-04**: Пользователь может экспортировать отчёт в PDF
 
 ## v2 Requirements
 
@@ -107,8 +107,8 @@
 | DEBT-03 | Phase 4 | Complete |
 | REPORT-01 | Phase 5 | Complete |
 | REPORT-02 | Phase 5 | Complete |
-| REPORT-03 | Phase 5 | Pending |
-| REPORT-04 | Phase 5 | Pending |
+| REPORT-03 | Phase 5 | Complete |
+| REPORT-04 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 27 total
