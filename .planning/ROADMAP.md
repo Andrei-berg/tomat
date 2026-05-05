@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 3: Orders** - Форма создания заказа и список заказов — ядро ценности продукта
 - [x] **Phase 3.1: Navigation & Auth UX** *(INSERTED — Gap Closure)* - Logout-кнопка + навигация между разделами + возврат из /prices (completed 2026-05-04)
 - [ ] **Phase 4: Debt Management** - Экран долгов с вычисляемым балансом и фиксацией погашений
-- [ ] **Phase 5: Reports & Export** - Отчёт за период с экспортом в Excel и PDF
+- [x] **Phase 5: Reports & Export** - Отчёт за период с экспортом в Excel и PDF (completed 2026-05-05)
 
 ## Phase Details
 
@@ -140,4 +140,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 3. Orders | 3/4 | In Progress|  |
 | 3.1. Navigation & Auth UX | 2/2 | Complete   | 2026-05-04 |
 | 4. Debt Management | 0/TBD | Not started | - |
-| 5. Reports & Export | 3/4 | In Progress|  |
+| 5. Reports & Export | 4/4 | Complete   | 2026-05-05 |

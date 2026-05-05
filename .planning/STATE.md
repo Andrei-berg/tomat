@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-05-05T04:20:45.144Z"
+last_updated: "2026-05-05T20:17:58.198Z"
 progress:
   total_phases: 7
   completed_phases: 7
@@ -22,10 +22,10 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 ## Current Position
 
-Phase: 5 of 5 (Reports & Export) — In Progress
-Plan: 3 of 4 complete (05-03 done — Excel + PDF export Route Handlers)
-Status: Phase 05 in progress — Plan 05-03 complete, ready for Plan 05-04 (browser verification)
-Last activity: 2026-05-04 — Plan 05-03 complete: GET /api/report/excel and GET /api/report/pdf handlers
+Phase: 5 of 5 (Reports & Export) — Complete
+Plan: 4 of 4 complete (05-04 done — browser verification checkpoint approved)
+Status: Phase 05 complete — all four REPORT requirements verified in browser; project v1.0 feature-complete
+Last activity: 2026-05-05 — Plan 05-04 complete: browser verification approved, three post-checkpoint fixes applied
 
 Progress: [██████████] 100%
 
@@ -62,6 +62,7 @@ Progress: [██████████] 100%
 | Phase 05-reports-export P01 | 2 | 2 tasks | 3 files |
 | Phase 05 P02 | 20 | 2 tasks | 3 files |
 | Phase 05 P03 | 10 | 2 tasks | 2 files |
+| Phase 05-reports-export P04 | 30 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -113,6 +114,7 @@ Recent decisions affecting current work:
 - [Phase 05-03]: route.tsx extension (not .ts) required for JSX in PDF route handler — TypeScript cannot parse JSX in .ts files
 - [Phase 05-03]: new Uint8Array(buffer) wrap for Node Buffer → Response BodyInit — Node.js Buffer not assignable to web BodyInit in this TypeScript config; Uint8Array is valid BufferSource/BodyInit
 - [Phase 05-reports-export]: 05-04: Dev server started for browser verification checkpoint — no code changes in this plan
+- [Phase 05-reports-export]: 05-04: Post-checkpoint fixes (dark background, CSS variable --mk-text, PDF Cyrillic font) applied after user approval without blocking verification
 
 ### Roadmap Evolution
 
@@ -130,6 +132,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-04
-Stopped at: Completed 05-03-PLAN.md — GET /api/report/excel and GET /api/report/pdf route handlers; ready for 05-04 (browser verification checkpoint).
+Last session: 2026-05-05
+Stopped at: Completed 05-04-PLAN.md — browser verification approved, Phase 05 complete; project v1.0 feature-complete.
 Resume file: None
