@@ -52,6 +52,17 @@ function IconPrices({ active }: { active: boolean }) {
   )
 }
 
+function IconReport({ active }: { active: boolean }) {
+  return (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <rect x="3.5" y="3.5" width="15" height="15" rx="2.5"
+        stroke="currentColor" strokeWidth={active ? 2 : 1.5} />
+      <path d="M7 8h8M7 11h8M7 14h5"
+        stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 const TABS = [
   {
     href: '/orders',
@@ -76,6 +87,12 @@ const TABS = [
     label: 'Прайс',
     Icon: IconPrices,
     match: (p: string) => p === '/prices',
+  },
+  {
+    href: '/report',
+    label: 'Отчёт',
+    Icon: IconReport,
+    match: (p: string) => p.startsWith('/report'),
   },
 ]
 
