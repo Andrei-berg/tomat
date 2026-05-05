@@ -1,5 +1,6 @@
 import 'server-only'
 import React from 'react'
+import path from 'path'
 import type { NextRequest } from 'next/server'
 import { verifySession, getReportData } from '@/lib/dal'
 import {
@@ -9,14 +10,23 @@ import {
   View,
   Text,
   StyleSheet,
+  Font,
 } from '@react-pdf/renderer'
 import type { ReportData } from '@/lib/dal'
 
 // IMPORTANT: React must be in scope for JSX to work in this file.
 // @react-pdf/renderer uses JSX and the Route Handler does not auto-import React.
 
+Font.register({
+  family: 'Roboto',
+  fonts: [
+    { src: path.join(process.cwd(), 'public/fonts/Roboto-Regular.ttf'), fontWeight: 'normal' },
+    { src: path.join(process.cwd(), 'public/fonts/Roboto-Bold.ttf'), fontWeight: 'bold' },
+  ],
+})
+
 const S = StyleSheet.create({
-  page: { padding: 30, fontSize: 10, fontFamily: 'Helvetica' },
+  page: { padding: 30, fontSize: 10, fontFamily: 'Roboto' },
   title: { fontSize: 14, fontWeight: 'bold', marginBottom: 16 },
   sectionTitle: {
     fontSize: 11,
