@@ -70,7 +70,7 @@ export default function ReportForm({
   const labelStyle: React.CSSProperties = { color: 'var(--mk-text-2)' }
   const valueStyle: React.CSSProperties = {
     fontWeight: 600,
-    color: 'var(--mk-text-1)',
+    color: 'var(--mk-text)',
     fontVariantNumeric: 'tabular-nums',
   }
 
@@ -97,7 +97,7 @@ export default function ReportForm({
               borderRadius: '8px',
               border: '1px solid var(--mk-border)',
               background: 'var(--mk-surface)',
-              color: 'var(--mk-text-1)',
+              color: 'var(--mk-text)',
               fontSize: '14px',
               colorScheme: 'dark',
             }}
@@ -118,7 +118,7 @@ export default function ReportForm({
               borderRadius: '8px',
               border: '1px solid var(--mk-border)',
               background: 'var(--mk-surface)',
-              color: 'var(--mk-text-1)',
+              color: 'var(--mk-text)',
               fontSize: '14px',
               colorScheme: 'dark',
             }}
@@ -146,7 +146,7 @@ export default function ReportForm({
           <span style={valueStyle}>{formatRub(ps.debtReceived)}</span>
         </div>
         <div style={{ ...lastRowStyle, borderTop: '1px solid var(--mk-border)', background: 'rgba(200,67,26,0.04)' }}>
-          <span style={{ ...labelStyle, fontWeight: 600, color: 'var(--mk-text-1)' }}>Итого получено</span>
+          <span style={{ ...labelStyle, fontWeight: 600, color: 'var(--mk-text)' }}>Итого получено</span>
           <span style={{ ...valueStyle, fontSize: '16px' }}>{formatRub(totalRevenue + ps.debtReceived)}</span>
         </div>
       </div>
@@ -167,7 +167,7 @@ export default function ReportForm({
               const isLast = i === productRows.length - 1
               return (
                 <div key={row.productId} style={isLast ? lastRowStyle : rowStyle}>
-                  <span style={{ flex: 2, color: 'var(--mk-text-1)' }}>{row.productName}</span>
+                  <span style={{ flex: 2, color: 'var(--mk-text)' }}>{row.productName}</span>
                   <span style={{ flex: 1, textAlign: 'right', ...valueStyle }}>{row.totalBoxes}</span>
                   <span style={{ flex: 1, textAlign: 'right', ...valueStyle }}>{row.totalKg.toFixed(1)}</span>
                   <span style={{ flex: 1.5, textAlign: 'right', ...valueStyle }}>{formatRub(row.totalAmount)}</span>
@@ -198,7 +198,7 @@ export default function ReportForm({
             borderRadius: '10px',
             border: '1px solid var(--mk-border)',
             background: 'var(--mk-surface)',
-            color: 'var(--mk-text-1)',
+            color: 'var(--mk-text)',
             fontSize: '14px',
             fontWeight: 500,
             textDecoration: 'none',
@@ -218,7 +218,7 @@ export default function ReportForm({
             borderRadius: '10px',
             border: '1px solid var(--mk-border)',
             background: 'var(--mk-surface)',
-            color: 'var(--mk-text-1)',
+            color: 'var(--mk-text)',
             fontSize: '14px',
             fontWeight: 500,
             textDecoration: 'none',
