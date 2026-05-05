@@ -25,9 +25,11 @@ export default async function ReportPage({
   const data = await getReportData(from, to)
 
   return (
-    <main style={{ maxWidth: 480, margin: '0 auto', padding: '0 16px 40px' }}>
-      <NavBar />
-      <ReportForm data={data} from={from} to={to} />
-    </main>
+    <div style={{ minHeight: '100svh', background: 'var(--mk-bg)', fontFamily: 'var(--font-geist-sans)' }}>
+      <main style={{ maxWidth: 480, margin: '0 auto', padding: '0 16px 40px' }}>
+        <NavBar />
+        <ReportForm data={data} from={from} to={to} />
+      </main>
+    </div>
   )
 }
