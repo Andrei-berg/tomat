@@ -8,6 +8,7 @@ export default function NavBar() {
   const pathname = usePathname()
   const isPricesActive = pathname === '/prices'
   const isOrdersActive = pathname.startsWith('/orders')
+  const isReportActive = pathname.startsWith('/report')
 
   const activeStyle: React.CSSProperties = {
     padding: '7px 14px',
@@ -49,6 +50,9 @@ export default function NavBar() {
         </Link>
         <Link href="/orders" style={isOrdersActive ? activeStyle : inactiveStyle}>
           Заказы
+        </Link>
+        <Link href="/report" style={isReportActive ? activeStyle : inactiveStyle}>
+          Отчёты
         </Link>
       </div>
       <form action={logout}>
