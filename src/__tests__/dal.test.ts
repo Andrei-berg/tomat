@@ -1,27 +1,21 @@
-/**
- * RED: Tests for getTodayPrices and hasTodayPrices in dal.ts
- * These tests must fail until the functions are implemented.
- */
+import { vi, describe, it, expect, beforeEach } from 'vitest'
 
-// Mock the supabase server module before importing dal
-const mockFrom = jest.fn()
-const mockSelect = jest.fn()
-const mockEq = jest.fn()
+const mockFrom = vi.fn()
+const mockSelect = vi.fn()
+const mockEq = vi.fn()
 
-jest.mock('@/lib/supabase/server', () => ({
+vi.mock('@/lib/supabase/server', () => ({
   createClient: () => ({
     from: mockFrom,
   }),
 }))
 
-// Mock next/navigation redirect used in verifySession
-jest.mock('next/navigation', () => ({
-  redirect: jest.fn(),
+vi.mock('next/navigation', () => ({
+  redirect: vi.fn(),
 }))
 
-// Mock session to always be authenticated
-jest.mock('@/lib/session', () => ({
-  getSession: jest.fn().mockResolvedValue({ isAuthenticated: true }),
+vi.mock('@/lib/session', () => ({
+  getSession: vi.fn().mockResolvedValue({ isAuthenticated: true }),
 }))
 
 import { getTodayPrices, hasTodayPrices } from '@/lib/dal'
@@ -30,7 +24,7 @@ const TODAY = new Date().toISOString().split('T')[0]
 
 describe('getTodayPrices', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   it('returns array of product_id and price_per_kg for today', async () => {
@@ -63,7 +57,7 @@ describe('getTodayPrices', () => {
 
 describe('hasTodayPrices', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   it('returns true when at least one price row exists for today', async () => {

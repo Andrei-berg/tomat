@@ -1,46 +1,40 @@
-/**
- * RED: Tests for savePrices and copyYesterdayPrices Server Actions
- * These tests must fail until prices.ts is created.
- */
+import { vi, describe, it, expect, beforeEach } from 'vitest'
 
-// Mock revalidatePath from next/cache
-const mockRevalidatePath = jest.fn()
-jest.mock('next/cache', () => ({
+// mockRevalidatePath is used directly in the vi.mock factory body,
+// so it must be hoisted before the factory runs (which happens at import time).
+const { mockRevalidatePath } = vi.hoisted(() => ({
+  mockRevalidatePath: vi.fn(),
+}))
+
+vi.mock('next/cache', () => ({
   revalidatePath: mockRevalidatePath,
 }))
 
-// Mock the supabase server module
-const mockUpsert = jest.fn()
-const mockFromSelect = jest.fn()
-const mockFromSelectEq = jest.fn()
-const mockFromUpsert = jest.fn()
+const mockFromSelectEq = vi.fn()
+const mockFromUpsert = vi.fn()
 
-jest.mock('@/lib/supabase/server', () => ({
+vi.mock('@/lib/supabase/server', () => ({
   createClient: () => ({
     from: mockFrom,
   }),
 }))
 
-function mockFrom(table: string) {
+function mockFrom(_table: string) {
   return {
-    select: (col: string, opts?: object) => ({
+    select: (_col: string, _opts?: object) => ({
       eq: mockFromSelectEq,
     }),
     upsert: mockFromUpsert,
   }
 }
 
-// Mock next/navigation
-jest.mock('next/navigation', () => ({
-  redirect: jest.fn(),
+vi.mock('next/navigation', () => ({
+  redirect: vi.fn(),
 }))
 
-// Mock session — authenticated
-jest.mock('@/lib/session', () => ({
-  getSession: jest.fn().mockResolvedValue({ isAuthenticated: true }),
+vi.mock('@/lib/session', () => ({
+  getSession: vi.fn().mockResolvedValue({ isAuthenticated: true }),
 }))
-
-// server-only is mocked via moduleNameMapper in jest.config.js
 
 import { savePrices, copyYesterdayPrices } from '@/app/actions/prices'
 
@@ -49,7 +43,7 @@ const YESTERDAY = new Date(Date.now() - 86400000).toISOString().split('T')[0]
 
 describe('savePrices', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   it('upserts valid price entries and returns success', async () => {
@@ -124,7 +118,7 @@ describe('savePrices', () => {
 
 describe('copyYesterdayPrices', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   it('returns prices from yesterday as a Record', async () => {
