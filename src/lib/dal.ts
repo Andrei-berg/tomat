@@ -55,6 +55,17 @@ export async function getOrdersByDate(date: string): Promise<OrderRow[]> {
   return data ?? []
 }
 
+export async function getOrdersByDateRange(from: string, to: string): Promise<OrderRow[]> {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('orders')
+    .select('*')
+    .gte('created_at', `${from}T00:00:00+00:00`)
+    .lte('created_at', `${to}T23:59:59+00:00`)
+    .order('created_at', { ascending: false })
+  return data ?? []
+}
+
 export async function getOrderById(id: string): Promise<OrderRow | null> {
   const supabase = createClient()
   const { data } = await supabase
