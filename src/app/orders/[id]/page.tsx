@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { verifySession, getOrderWithItems } from '@/lib/dal'
 import type { OrderWithItems } from '@/lib/dal'
 import BottomNav from '@/components/ui/bottom-nav'
+import DeleteOrderButton from '@/components/ui/delete-order-button'
 
 function formatRub(amount: number): string {
   return amount.toLocaleString('ru-RU', {
@@ -269,6 +271,7 @@ export default async function OrderDetailPage({
           borderRadius: '14px',
           background: 'var(--mk-surface)',
           border: '1px solid var(--mk-border)',
+          marginBottom: '24px',
         }}>
           <p style={{
             margin: '0 0 12px',
@@ -327,6 +330,31 @@ export default async function OrderDetailPage({
               </span>
             </div>
           </div>
+        </div>
+
+        {/* ── Actions ────────────────────────────────── */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <Link
+            href={`/orders/${order.id}/edit`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              height: '50px',
+              borderRadius: '14px',
+              background: 'var(--mk-card)',
+              border: '1.5px solid var(--mk-border)',
+              color: 'var(--mk-text)',
+              fontSize: '15px',
+              fontWeight: 600,
+              textDecoration: 'none',
+              fontFamily: 'var(--font-geist-sans)',
+            }}
+          >
+            Редактировать
+          </Link>
+          <DeleteOrderButton orderId={order.id} />
         </div>
 
       </div>
