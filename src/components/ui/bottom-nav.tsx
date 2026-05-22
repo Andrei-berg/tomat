@@ -101,13 +101,14 @@ export default function BottomNav() {
 
   return (
     <nav
+      className="mk-bottom-nav"
       style={{
         position: 'fixed',
         bottom: 0,
         left: 0,
         right: 0,
         zIndex: 50,
-        borderTop: '1px solid var(--mk-border)',
+        borderTop: '1px solid var(--mk-border-sub)',
         backdropFilter: 'blur(24px)',
         WebkitBackdropFilter: 'blur(24px)',
         background: 'rgba(12, 9, 6, 0.88)',

@@ -15,7 +15,15 @@ export default async function LoginPage({ searchParams }: Props) {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50">
+    <main style={{
+      minHeight: '100svh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '24px',
+      background: 'radial-gradient(60% 50% at 50% 30%, rgba(212,69,28,0.10), transparent 70%), var(--mk-bg)',
+    }}>
       <LoginForm redirectPath={params.redirect} />
     </main>
   )
