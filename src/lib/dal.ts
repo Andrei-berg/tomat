@@ -182,6 +182,7 @@ export type DebtorEntry = {
   clientId: string | null
   clientName: string
   totalDebt: number
+  totalOriginal: number
   lastOrderAt: string
   orderCount: number
 }
@@ -202,20 +203,21 @@ export async function getDebtors(): Promise<DebtorEntry[]> {
     paidByOrder.set(p.order_id, (paidByOrder.get(p.order_id) ?? 0) + p.amount)
   }
 
-  const byClient = new Map<string, { clientId: string | null; name: string; debt: number; lastAt: string; count: number }>()
+  const byClient = new Map<string, { clientId: string | null; name: string; debt: number; original: number; lastAt: string; count: number }>()
   for (const o of orders ?? []) {
     const key = o.client_id ?? `raw:${o.client_name_raw ?? 'unknown'}`
     const name = o.client_name_raw ?? 'Неизвестный'
-    const remaining = Math.max(0, calcEffective(o) - (paidByOrder.get(o.id) ?? 0))
+    const eff = calcEffective(o)
+    const remaining = Math.max(0, eff - (paidByOrder.get(o.id) ?? 0))
     if (remaining <= 0) continue
     const e = byClient.get(key)
-    if (e) { e.debt += remaining; e.count++; if (o.created_at > e.lastAt) e.lastAt = o.created_at }
-    else byClient.set(key, { clientId: o.client_id, name, debt: remaining, lastAt: o.created_at, count: 1 })
+    if (e) { e.debt += remaining; e.original += eff; e.count++; if (o.created_at > e.lastAt) e.lastAt = o.created_at }
+    else byClient.set(key, { clientId: o.client_id, name, debt: remaining, original: eff, lastAt: o.created_at, count: 1 })
   }
 
   return Array.from(byClient.values())
     .sort((a, b) => b.debt - a.debt)
-    .map(e => ({ clientId: e.clientId, clientName: e.name, totalDebt: e.debt, lastOrderAt: e.lastAt, orderCount: e.count }))
+    .map(e => ({ clientId: e.clientId, clientName: e.name, totalDebt: e.debt, totalOriginal: e.original, lastOrderAt: e.lastAt, orderCount: e.count }))
 }
 
 export type DebtOrderEntry = {

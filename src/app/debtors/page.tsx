@@ -1,23 +1,9 @@
-import Link from 'next/link'
 import { verifySession, getDebtors } from '@/lib/dal'
+import DebtorsList from '@/components/ui/debtors-list'
 import BottomNav from '@/components/ui/bottom-nav'
 
 function rub(n: number) {
   return n.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 })
-}
-
-function relativeDate(iso: string): string {
-  const diff = Date.now() - new Date(iso).getTime()
-  const days = Math.floor(diff / 86400000)
-  if (days === 0) return 'сегодня'
-  if (days === 1) return 'вчера'
-  if (days < 7) return `${days} дн. назад`
-  if (days < 30) return `${Math.floor(days / 7)} нед. назад`
-  return `${Math.floor(days / 30)} мес. назад`
-}
-
-function initials(name: string): string {
-  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
 }
 
 export default async function DebtorsPage() {
@@ -30,7 +16,7 @@ export default async function DebtorsPage() {
     <div style={{ minHeight: '100svh', background: 'var(--mk-bg)', fontFamily: 'var(--font-geist-sans)' }}>
       <div style={{ maxWidth: '480px', margin: '0 auto', padding: '0 20px', paddingBottom: 'calc(var(--mk-nav-h) + 32px)' }}>
 
-        {/* ── Header ── */}
+        {/* Header */}
         <div style={{ paddingTop: '24px', paddingBottom: '4px' }}>
           <p style={{ margin: 0, fontSize: '10px', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--mk-text-3)' }}>
             Контроль
@@ -40,14 +26,11 @@ export default async function DebtorsPage() {
           </h1>
         </div>
 
-        {/* ── Total debt banner ── */}
+        {/* Total banner */}
         {debtors.length > 0 && (
           <div style={{
-            marginTop: '20px',
-            padding: '20px 22px',
-            borderRadius: '16px',
-            background: 'var(--mk-amber-bg)',
-            border: '1px solid var(--mk-amber-border)',
+            marginTop: '20px', padding: '20px 22px', borderRadius: '16px',
+            background: 'var(--mk-amber-bg)', border: '1px solid var(--mk-amber-border)',
           }}>
             <p style={{ margin: 0, fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--mk-amber)', opacity: 0.7 }}>
               К получению
@@ -61,7 +44,7 @@ export default async function DebtorsPage() {
           </div>
         )}
 
-        {/* ── List ── */}
+        {/* List */}
         <div style={{ marginTop: '16px' }}>
           {debtors.length === 0 ? (
             <div style={{
@@ -81,72 +64,7 @@ export default async function DebtorsPage() {
               </p>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {debtors.map((d, i) => {
-                const inits = initials(d.clientName)
-                const cardStyle = {
-                  display: 'flex', alignItems: 'center', gap: '14px',
-                  padding: '14px 16px', borderRadius: '14px',
-                  background: 'var(--mk-card)', border: '1px solid var(--mk-border)',
-                  borderLeft: '3px solid var(--mk-amber)',
-                  animation: 'mkUp 0.22s both',
-                  animationDelay: `${i * 0.04}s`,
-                  textDecoration: 'none',
-                  cursor: d.clientId ? 'pointer' : 'default',
-                }
-                const cardContent = (
-                  <>
-                    {/* Avatar */}
-                    <div style={{
-                      width: '44px', height: '44px', borderRadius: '12px', flexShrink: 0,
-                      background: 'var(--mk-amber-bg)', border: '1px solid var(--mk-amber-border)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '14px', fontWeight: 800, color: 'var(--mk-amber)',
-                    }}>
-                      {inits}
-                    </div>
-
-                    {/* Info */}
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--mk-text)', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {d.clientName}
-                      </p>
-                      <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
-                        <span style={{ fontSize: '12px', color: 'var(--mk-text-2)' }}>
-                          {d.orderCount} заказ{d.orderCount === 1 ? '' : d.orderCount < 5 ? 'а' : 'ов'}
-                        </span>
-                        <span style={{ fontSize: '12px', color: 'var(--mk-text-3)' }}>
-                          {relativeDate(d.lastOrderAt)}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Debt amount */}
-                    <div style={{ flexShrink: 0, textAlign: 'right' }}>
-                      <p style={{ margin: 0, fontSize: '18px', fontWeight: 800, color: 'var(--mk-amber)', letterSpacing: '-0.03em', fontFamily: 'var(--font-geist-mono)' }}>
-                        {rub(d.totalDebt)}
-                      </p>
-                    </div>
-                  </>
-                )
-                return d.clientId ? (
-                  <Link
-                    key={`${d.clientId}-${i}`}
-                    href={`/debts/${d.clientId}`}
-                    style={cardStyle}
-                  >
-                    {cardContent}
-                  </Link>
-                ) : (
-                  <div
-                    key={`${d.clientId}-${i}`}
-                    style={cardStyle}
-                  >
-                    {cardContent}
-                  </div>
-                )
-              })}
-            </div>
+            <DebtorsList debtors={debtors} />
           )}
         </div>
       </div>

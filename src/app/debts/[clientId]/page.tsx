@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { verifySession, getClientDebtOrders, getDebtPayments, getClientWithStats } from '@/lib/dal'
 import type { DebtOrderEntry, DebtPaymentRow } from '@/lib/dal'
-import PaymentForm from '@/components/ui/payment-form'
+import DebtPayButton from '@/components/ui/debt-pay-button'
 import BottomNav from '@/components/ui/bottom-nav'
 
 function rub(n: number) {
@@ -10,8 +10,16 @@ function rub(n: number) {
 }
 
 function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' })
+  return new Date(iso).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })
 }
+
+function formatDateTime(iso: string): string {
+  return new Date(iso).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+}
+
+type TimelineEvent =
+  | { kind: 'order'; date: string; orderId: string; effectiveTotal: number; remaining: number; status: 'debt' | 'partial' }
+  | { kind: 'payment'; date: string; orderId: string; amount: number; paymentType: 'cash' | 'card' }
 
 export default async function DebtDetailPage({ params }: { params: Promise<{ clientId: string }> }) {
   const { clientId } = await params
@@ -27,111 +35,181 @@ export default async function DebtDetailPage({ params }: { params: Promise<{ cli
   const paymentHistories = await Promise.all(orders.map((o: DebtOrderEntry) => getDebtPayments(o.orderId)))
 
   const totalRemaining = orders.reduce((s: number, o: DebtOrderEntry) => s + o.remaining, 0)
+  const totalOriginal = orders.reduce((s: number, o: DebtOrderEntry) => s + o.effectiveTotal, 0)
+  const totalPaid = totalOriginal - totalRemaining
+  const progressPct = totalOriginal > 0 ? Math.max(0, (totalPaid / totalOriginal) * 100) : 0
+
+  // Build flat timeline (newest first)
+  const events: TimelineEvent[] = []
+  orders.forEach((order: DebtOrderEntry, i: number) => {
+    events.push({
+      kind: 'order',
+      date: order.createdAt,
+      orderId: order.orderId,
+      effectiveTotal: order.effectiveTotal,
+      remaining: order.remaining,
+      status: order.status,
+    })
+    paymentHistories[i].forEach((p: DebtPaymentRow) => {
+      events.push({
+        kind: 'payment',
+        date: p.paid_at,
+        orderId: order.orderId,
+        amount: p.amount,
+        paymentType: p.payment_type,
+      })
+    })
+  })
+  events.sort((a, b) => b.date.localeCompare(a.date))
 
   return (
     <div style={{ minHeight: '100svh', background: 'var(--mk-bg)', fontFamily: 'var(--font-geist-sans)' }}>
-      <div style={{ maxWidth: '480px', margin: '0 auto', padding: '0 20px', paddingBottom: 'calc(var(--mk-nav-h) + 32px)' }}>
+      <div style={{ maxWidth: '480px', margin: '0 auto', padding: '0 20px', paddingBottom: 'calc(var(--mk-nav-h) + 40px)' }}>
 
-        {/* Back link */}
+        {/* Back */}
         <div style={{ paddingTop: '20px' }}>
           <Link href="/debtors" style={{ fontSize: '13px', color: 'var(--mk-text-3)', textDecoration: 'none' }}>
             ← Должники
           </Link>
         </div>
 
-        {/* Header */}
+        {/* Client name */}
         <div style={{ paddingTop: '12px', paddingBottom: '4px' }}>
           <p style={{ margin: 0, fontSize: '10px', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--mk-text-3)' }}>
-            Долги клиента
+            Расчёты клиента
           </p>
           <h1 style={{ margin: '4px 0 0', fontSize: '28px', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.1, color: 'var(--mk-text)' }}>
             {client.name}
           </h1>
         </div>
 
-        {/* Total remaining banner */}
-        {totalRemaining > 0 && (
+        {/* Balance card */}
+        {totalRemaining > 0 ? (
           <div style={{
-            marginTop: '16px', padding: '16px 20px', borderRadius: '14px',
+            marginTop: '20px', padding: '20px 20px 18px', borderRadius: '18px',
             background: 'var(--mk-amber-bg)', border: '1px solid var(--mk-amber-border)',
           }}>
             <p style={{ margin: 0, fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--mk-amber)', opacity: 0.7 }}>
               Остаток долга
             </p>
-            <p style={{ margin: '4px 0 0', fontSize: '30px', fontWeight: 800, letterSpacing: '-0.04em', color: 'var(--mk-amber)', fontFamily: 'var(--font-geist-mono)', lineHeight: 1 }}>
+            <p style={{ margin: '6px 0 0', fontSize: '36px', fontWeight: 800, letterSpacing: '-0.04em', color: 'var(--mk-amber)', fontFamily: 'var(--font-geist-mono)', lineHeight: 1 }}>
               {rub(totalRemaining)}
             </p>
+
+            {/* Progress bar */}
+            <div style={{ marginTop: '14px', height: '6px', borderRadius: '3px', background: 'rgba(212,120,14,0.2)', overflow: 'hidden' }}>
+              {totalPaid > 0.5 && (
+                <div style={{
+                  height: '100%', borderRadius: '3px',
+                  width: `${progressPct}%`,
+                  background: 'var(--mk-ok-text)',
+                }} />
+              )}
+            </div>
+
+            {totalPaid > 0.5 && (
+              <p style={{ margin: '8px 0 0', fontSize: '12px', color: 'var(--mk-text-2)' }}>
+                Получено {rub(totalPaid)} из {rub(totalOriginal)}
+              </p>
+            )}
+            <p style={{ margin: totalPaid > 0.5 ? '2px 0 0' : '8px 0 0', fontSize: '12px', color: 'var(--mk-text-2)' }}>
+              {orders.length} заказ{orders.length === 1 ? '' : orders.length < 5 ? 'а' : 'ов'} в долг
+            </p>
+
+            <div style={{ marginTop: '16px' }}>
+              <DebtPayButton clientId={clientId} clientName={client.name} totalDebt={totalRemaining} />
+            </div>
+          </div>
+        ) : (
+          <div style={{
+            marginTop: '20px', padding: '20px', borderRadius: '18px',
+            background: 'var(--mk-ok-bg)', border: '1px solid var(--mk-ok-border)',
+            textAlign: 'center',
+          }}>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--mk-ok-text)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 10px', display: 'block' }}>
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+            <p style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--mk-ok-text)' }}>Долг погашен</p>
+            <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--mk-text-3)' }}>Все расчёты закрыты</p>
           </div>
         )}
 
-        {/* Orders list */}
-        <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {orders.length === 0 ? (
-            <div style={{ padding: '48px 24px', textAlign: 'center', borderRadius: '14px', background: 'var(--mk-surface)', border: '1px solid var(--mk-border)' }}>
-              <p style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: 'var(--mk-text-2)' }}>Все долги погашены</p>
-            </div>
-          ) : (
-            orders.map((order: DebtOrderEntry, i: number) => {
-              const history: DebtPaymentRow[] = paymentHistories[i]
-              return (
-                <div key={order.orderId} style={{
-                  padding: '16px 18px', borderRadius: '14px',
-                  background: 'var(--mk-card)', border: '1px solid var(--mk-border)',
-                  borderLeft: '3px solid var(--mk-amber)',
-                }}>
-                  {/* Order meta */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div>
-                      <p style={{ margin: 0, fontSize: '13px', color: 'var(--mk-text-3)' }}>
-                        {formatDate(order.createdAt)}
-                      </p>
-                      <p style={{ margin: '2px 0 0', fontSize: '12px', color: 'var(--mk-text-3)' }}>
-                        Итог: {rub(order.effectiveTotal)}
-                        {order.paidTotal > 0 && ` · Уплачено: ${rub(order.paidTotal)}`}
-                      </p>
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <p style={{ margin: 0, fontSize: '20px', fontWeight: 800, color: 'var(--mk-amber)', fontFamily: 'var(--font-geist-mono)', letterSpacing: '-0.03em' }}>
-                        {rub(order.remaining)}
-                      </p>
-                      <span style={{
-                        fontSize: '11px', fontWeight: 700, padding: '2px 7px', borderRadius: '6px',
-                        background: order.status === 'partial' ? 'var(--mk-amber-bg)' : 'rgba(239,68,68,0.1)',
-                        color: order.status === 'partial' ? 'var(--mk-amber)' : '#ef4444',
-                      }}>
-                        {order.status === 'partial' ? 'Частично' : 'Долг'}
-                      </span>
-                    </div>
-                  </div>
+        {/* Timeline */}
+        {events.length > 0 && (
+          <div style={{ marginTop: '28px' }}>
+            <p style={{ margin: '0 0 14px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--mk-text-3)' }}>
+              История
+            </p>
 
-                  {/* Payment history */}
-                  {history.length > 0 && (
-                    <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid var(--mk-border)' }}>
-                      <p style={{ margin: '0 0 6px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--mk-text-3)' }}>
-                        История погашений
-                      </p>
-                      {history.map((p: DebtPaymentRow) => (
-                        <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '3px' }}>
-                          <span style={{ color: 'var(--mk-text-2)' }}>
-                            {new Date(p.paid_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })} · {p.payment_type === 'cash' ? 'Наличные' : 'Карта'}
-                          </span>
-                          <span style={{ fontFamily: 'var(--font-geist-mono)', fontWeight: 600, color: 'var(--mk-text)' }}>
-                            {rub(p.amount)}
-                          </span>
+            <div style={{ position: 'relative' }}>
+              {/* Vertical line */}
+              <div style={{
+                position: 'absolute', left: '19px', top: '8px', bottom: '8px', width: '2px',
+                background: 'var(--mk-border)',
+              }} />
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                {events.map((ev, i) => (
+                  <div key={i} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                    {/* Timeline dot */}
+                    <div style={{ flexShrink: 0, marginTop: '14px', position: 'relative', zIndex: 1 }}>
+                      <div style={{
+                        width: '10px', height: '10px', borderRadius: '50%',
+                        background: ev.kind === 'payment' ? 'var(--mk-ok-text)' : 'var(--mk-amber)',
+                        border: `2px solid var(--mk-bg)`,
+                        marginLeft: '5px',
+                      }} />
+                    </div>
+
+                    {/* Event card */}
+                    <div style={{
+                      flex: 1, padding: '12px 14px', borderRadius: '14px',
+                      background: 'var(--mk-card)', border: '1px solid var(--mk-border)',
+                      marginBottom: '6px',
+                    }}>
+                      {ev.kind === 'order' ? (
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                          <div>
+                            <p style={{ margin: 0, fontSize: '13px', fontWeight: 700, color: 'var(--mk-text)' }}>
+                              Долг выдан
+                            </p>
+                            <p style={{ margin: '2px 0 0', fontSize: '12px', color: 'var(--mk-text-3)' }}>
+                              {formatDate(ev.date)}
+                            </p>
+                          </div>
+                          <div style={{ textAlign: 'right' }}>
+                            <p style={{ margin: 0, fontSize: '15px', fontWeight: 800, color: 'var(--mk-amber)', fontFamily: 'var(--font-geist-mono)' }}>
+                              {rub(ev.effectiveTotal)}
+                            </p>
+                            {ev.remaining < ev.effectiveTotal && (
+                              <p style={{ margin: '2px 0 0', fontSize: '11px', color: 'var(--mk-text-3)' }}>
+                                остаток {rub(ev.remaining)}
+                              </p>
+                            )}
+                          </div>
                         </div>
-                      ))}
+                      ) : (
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                          <div>
+                            <p style={{ margin: 0, fontSize: '13px', fontWeight: 700, color: 'var(--mk-ok-text)' }}>
+                              Оплата получена
+                            </p>
+                            <p style={{ margin: '2px 0 0', fontSize: '12px', color: 'var(--mk-text-3)' }}>
+                              {formatDateTime(ev.date)} · {ev.paymentType === 'cash' ? 'Наличные' : 'Карта'}
+                            </p>
+                          </div>
+                          <p style={{ margin: 0, fontSize: '15px', fontWeight: 800, color: 'var(--mk-ok-text)', fontFamily: 'var(--font-geist-mono)' }}>
+                            +{rub(ev.amount)}
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  )}
-
-                  {/* Inline payment form */}
-                  <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--mk-border)' }}>
-                    <PaymentForm orderId={order.orderId} clientId={clientId} maxAmount={order.remaining} />
                   </div>
-                </div>
-              )
-            })
-          )}
-        </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       <BottomNav />
     </div>
