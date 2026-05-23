@@ -26,8 +26,8 @@ export async function GET(request: NextRequest) {
   summary.getRow(1).font = { bold: true }
   summary.addRow({ type: 'Наличные', amount: data.paymentSummary.cash })
   summary.addRow({ type: 'Карта', amount: data.paymentSummary.card })
-  summary.addRow({ type: 'Долги (не получено)', amount: data.paymentSummary.debtUnpaid })
-  summary.addRow({ type: 'Долги (получено)', amount: data.paymentSummary.debtReceived })
+  summary.addRow({ type: 'В кредит (не получено)', amount: data.paymentSummary.debtUnpaid })
+  summary.addRow({ type: 'В кредит (получено)', amount: data.paymentSummary.debtReceived })
   summary.addRow({
     type: 'Итого получено',
     amount: data.paymentSummary.cash + data.paymentSummary.card + data.paymentSummary.debtReceived,

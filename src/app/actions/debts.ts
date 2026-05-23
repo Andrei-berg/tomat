@@ -92,7 +92,7 @@ export async function recordClientPayment(
     .in('status', ['debt', 'partial'])
     .order('created_at', { ascending: true })
 
-  if (!orders || orders.length === 0) return { error: 'Долги не найдены' }
+  if (!orders || orders.length === 0) return { error: 'Расчёты не найдены' }
 
   const orderIds = orders.map(o => o.id)
   const { data: existingPayments } = await supabase

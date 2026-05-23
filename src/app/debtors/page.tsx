@@ -22,7 +22,7 @@ export default async function DebtorsPage() {
             Контроль
           </p>
           <h1 style={{ margin: '4px 0 0', fontSize: '32px', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, color: 'var(--mk-text)' }}>
-            Долги
+            Расчёты
           </h1>
         </div>
 
@@ -39,7 +39,7 @@ export default async function DebtorsPage() {
               {rub(total)}
             </p>
             <p style={{ margin: '8px 0 0', fontSize: '12px', color: 'var(--mk-text-2)' }}>
-              {debtors.length} {debtors.length === 1 ? 'должник' : debtors.length < 5 ? 'должника' : 'должников'}
+              {debtors.length} {debtors.length === 1 ? 'клиент' : debtors.length < 5 ? 'клиента' : 'клиентов'}
             </p>
           </div>
         )}
@@ -57,7 +57,7 @@ export default async function DebtorsPage() {
                 <path d="M22 18v10M22 32v2" stroke="var(--mk-text)" strokeWidth="2.5" strokeLinecap="round" />
               </svg>
               <p style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: 'var(--mk-text-2)' }}>
-                Долгов нет
+                Расчётов нет
               </p>
               <p style={{ margin: '6px 0 0', fontSize: '13px', color: 'var(--mk-text-3)' }}>
                 Все расчёты закрыты

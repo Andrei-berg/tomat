@@ -138,11 +138,11 @@ export default function ReportForm({
           <span style={valueStyle}>{formatRub(ps.card)}</span>
         </div>
         <div style={rowStyle}>
-          <span style={labelStyle}>Долги (не получено)</span>
+          <span style={labelStyle}>В кредит (не получено)</span>
           <span style={{ ...valueStyle, color: 'var(--mk-accent)' }}>{formatRub(ps.debtUnpaid)}</span>
         </div>
         <div style={rowStyle}>
-          <span style={labelStyle}>Долги (получено)</span>
+          <span style={labelStyle}>В кредит (получено)</span>
           <span style={valueStyle}>{formatRub(ps.debtReceived)}</span>
         </div>
         <div style={{ ...lastRowStyle, borderTop: '1px solid var(--mk-border)', background: 'rgba(200,67,26,0.04)' }}>

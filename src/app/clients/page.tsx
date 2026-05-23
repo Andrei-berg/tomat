@@ -78,7 +78,7 @@ export default async function ClientsPage() {
               </svg>
               <div>
                 <p style={{ margin: 0, fontSize: '13px', fontWeight: 700, color: '#d4780e' }}>
-                  {withDebt.length} {withDebt.length === 1 ? 'должник' : withDebt.length < 5 ? 'должника' : 'должников'}
+                  {withDebt.length} {withDebt.length === 1 ? 'клиент' : withDebt.length < 5 ? 'клиента' : 'клиентов'} в расчёте
                 </p>
                 <p style={{ margin: '2px 0 0', fontSize: '11px', color: 'var(--mk-text-2)' }}>
                   Суммарный долг: {rub(withDebt.reduce((s, c) => s + c.debtAmount, 0))}

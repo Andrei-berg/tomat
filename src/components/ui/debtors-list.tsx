@@ -19,6 +19,21 @@ function relativeDate(iso: string): string {
   return `${Math.floor(days / 30)} мес. назад`
 }
 
+type AgingTier = { label: string; color: string; bg: string; border: string }
+
+function agingBadge(oldestDebtAt: string): AgingTier {
+  const days = Math.floor((Date.now() - new Date(oldestDebtAt).getTime()) / 86400000)
+  if (days <= 3) {
+    const label = days === 0 ? 'сегодня' : days === 1 ? '1 день' : `${days} дня`
+    return { label, color: 'var(--mk-amber)', bg: 'var(--mk-amber-bg)', border: 'var(--mk-amber-border)' }
+  }
+  if (days <= 14) {
+    return { label: `${days} дн.`, color: '#e07820', bg: 'rgba(224,120,32,0.13)', border: 'rgba(224,120,32,0.28)' }
+  }
+  const label = days < 30 ? `${days} дн.` : `${Math.floor(days / 30)} мес.`
+  return { label, color: 'var(--mk-err-text)', bg: 'var(--mk-err-bg)', border: 'var(--mk-err-border)' }
+}
+
 function initials(name: string): string {
   return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
 }
@@ -39,6 +54,7 @@ export default function DebtorsList({ debtors }: DebtorsListProps) {
           const progressPct = d.totalOriginal > 0 ? Math.max(0, (paidAmount / d.totalOriginal) * 100) : 0
           const hasPartialPayment = paidAmount > 0.5
           const canPay = !!d.clientId
+          const aging = agingBadge(d.oldestDebtAt)
 
           return (
             <div
@@ -47,7 +63,7 @@ export default function DebtorsList({ debtors }: DebtorsListProps) {
                 borderRadius: '16px',
                 background: 'var(--mk-card)',
                 border: '1px solid var(--mk-border)',
-                borderLeft: '3px solid var(--mk-amber)',
+                borderLeft: `3px solid ${aging.color}`,
                 overflow: 'hidden',
                 animation: 'mkUp 0.22s both',
                 animationDelay: `${i * 0.04}s`,
@@ -59,11 +75,11 @@ export default function DebtorsList({ debtors }: DebtorsListProps) {
                   href={`/debts/${d.clientId}`}
                   style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px 10px', textDecoration: 'none' }}
                 >
-                  <CardBody d={d} inits={inits} />
+                  <CardBody d={d} inits={inits} aging={aging} />
                 </Link>
               ) : (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px 10px' }}>
-                  <CardBody d={d} inits={inits} />
+                  <CardBody d={d} inits={inits} aging={aging} />
                 </div>
               )}
 
@@ -131,7 +147,7 @@ export default function DebtorsList({ debtors }: DebtorsListProps) {
   )
 }
 
-function CardBody({ d, inits }: { d: DebtorEntry; inits: string }) {
+function CardBody({ d, inits, aging }: { d: DebtorEntry; inits: string; aging: AgingTier }) {
   return (
     <>
       <div style={{
@@ -148,22 +164,23 @@ function CardBody({ d, inits }: { d: DebtorEntry; inits: string }) {
           {d.clientName}
         </p>
         <p style={{ margin: '3px 0 0', fontSize: '12px', color: 'var(--mk-text-3)' }}>
-          {d.orderCount} заказ{d.orderCount === 1 ? '' : d.orderCount < 5 ? 'а' : 'ов'} · последний {(() => {
-            const diff = Date.now() - new Date(d.lastOrderAt).getTime()
-            const days = Math.floor(diff / 86400000)
-            if (days === 0) return 'сегодня'
-            if (days === 1) return 'вчера'
-            if (days < 7) return `${days} дн. назад`
-            if (days < 30) return `${Math.floor(days / 7)} нед. назад`
-            return `${Math.floor(days / 30)} мес. назад`
-          })()}
+          {d.orderCount} {d.orderCount === 1 ? 'операция' : d.orderCount < 5 ? 'операции' : 'операций'}
         </p>
       </div>
 
-      <div style={{ flexShrink: 0, textAlign: 'right' }}>
+      <div style={{ flexShrink: 0, textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '5px' }}>
         <p style={{ margin: 0, fontSize: '19px', fontWeight: 800, color: 'var(--mk-amber)', letterSpacing: '-0.03em', fontFamily: 'var(--font-geist-mono)' }}>
           {d.totalDebt.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 })}
         </p>
+        <span style={{
+          fontSize: '11px', fontWeight: 700, letterSpacing: '0.02em',
+          color: aging.color, background: aging.bg,
+          border: `1px solid ${aging.border}`,
+          borderRadius: '6px', padding: '2px 7px',
+          lineHeight: 1.5,
+        }}>
+          {aging.label}
+        </span>
       </div>
     </>
   )

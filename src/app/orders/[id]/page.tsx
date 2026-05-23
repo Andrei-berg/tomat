@@ -25,7 +25,7 @@ function getEffective(order: OrderWithItems): number {
 const PAYMENT_LABELS: Record<string, string> = {
   cash: 'Наличные',
   card: 'Карта',
-  debt: 'Долг',
+  debt: 'В кредит',
 }
 
 const PAYMENT_COLORS: Record<string, { bg: string; color: string; border: string }> = {

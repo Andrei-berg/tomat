@@ -78,7 +78,7 @@ const TABS = [
   },
   {
     href: '/debtors',
-    label: 'Долги',
+    label: 'Расчёты',
     Icon: IconDebt,
     match: (p: string) => p.startsWith('/debtors'),
   },

@@ -69,7 +69,7 @@ export default async function DebtDetailPage({ params }: { params: Promise<{ cli
         {/* Back */}
         <div style={{ paddingTop: '20px' }}>
           <Link href="/debtors" style={{ fontSize: '13px', color: 'var(--mk-text-3)', textDecoration: 'none' }}>
-            ← Должники
+            ← Расчёты
           </Link>
         </div>
 
@@ -113,7 +113,7 @@ export default async function DebtDetailPage({ params }: { params: Promise<{ cli
               </p>
             )}
             <p style={{ margin: totalPaid > 0.5 ? '2px 0 0' : '8px 0 0', fontSize: '12px', color: 'var(--mk-text-2)' }}>
-              {orders.length} заказ{orders.length === 1 ? '' : orders.length < 5 ? 'а' : 'ов'} в долг
+              {orders.length} {orders.length === 1 ? 'операция' : orders.length < 5 ? 'операции' : 'операций'} в кредит
             </p>
 
             <div style={{ marginTop: '16px' }}>
@@ -129,7 +129,7 @@ export default async function DebtDetailPage({ params }: { params: Promise<{ cli
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--mk-ok-text)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 10px', display: 'block' }}>
               <path d="M20 6 9 17l-5-5" />
             </svg>
-            <p style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--mk-ok-text)' }}>Долг погашен</p>
+            <p style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--mk-ok-text)' }}>Расчёт закрыт</p>
             <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--mk-text-3)' }}>Все расчёты закрыты</p>
           </div>
         )}
@@ -171,7 +171,7 @@ export default async function DebtDetailPage({ params }: { params: Promise<{ cli
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                           <div>
                             <p style={{ margin: 0, fontSize: '13px', fontWeight: 700, color: 'var(--mk-text)' }}>
-                              Долг выдан
+                              Отпущено в кредит
                             </p>
                             <p style={{ margin: '2px 0 0', fontSize: '12px', color: 'var(--mk-text-3)' }}>
                               {formatDate(ev.date)}

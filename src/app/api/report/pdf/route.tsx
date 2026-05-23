@@ -77,8 +77,8 @@ function ReportDocument({ data }: { data: ReportData }) {
   const paymentRows: Array<[string, number]> = [
     ['Наличные', ps.cash],
     ['Карта', ps.card],
-    ['Долги (не получено)', ps.debtUnpaid],
-    ['Долги (получено)', ps.debtReceived],
+    ['В кредит (не получено)', ps.debtUnpaid],
+    ['В кредит (получено)', ps.debtReceived],
   ]
 
   return (

@@ -500,7 +500,7 @@ export default function OrderForm({ products, priceMap, initialClientId, initial
           {([
             { value: 'cash', label: 'Наличные' },
             { value: 'card', label: 'Карта' },
-            { value: 'debt', label: 'Долг' },
+            { value: 'debt', label: 'В кредит' },
           ] as const).map(opt => {
             const active = paymentType === opt.value
             return (

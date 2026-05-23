@@ -361,7 +361,7 @@ export default function OrderEditForm({
           {([
             { value: 'cash', label: 'Наличные' },
             { value: 'card', label: 'Карта' },
-            { value: 'debt', label: 'Долг' },
+            { value: 'debt', label: 'В кредит' },
           ] as const).map(opt => {
             const active = paymentType === opt.value
             return (

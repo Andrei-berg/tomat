@@ -84,7 +84,7 @@ export default function PaySheet({ clientId, clientName, totalDebt, open, onClos
             {clientName}
           </p>
           <p style={{ margin: '4px 0 0', fontSize: '15px', fontWeight: 700, color: 'var(--mk-amber)', fontFamily: 'var(--font-geist-mono)' }}>
-            Долг: {Math.round(totalDebt).toLocaleString('ru-RU')} ₽
+            К получению: {Math.round(totalDebt).toLocaleString('ru-RU')} ₽
           </p>
         </div>
 

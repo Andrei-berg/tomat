@@ -14,7 +14,7 @@ function effective(o: OrderRow): number {
   return base
 }
 
-const PT_LABEL: Record<string, string> = { cash: 'Нал', card: 'Карта', debt: 'Долг' }
+const PT_LABEL: Record<string, string> = { cash: 'Нал', card: 'Карта', debt: 'Кредит' }
 const PT_COLOR: Record<string, { text: string; bg: string; border: string; bar: string }> = {
   cash: { text: '#57b875', bg: 'rgba(55,175,90,0.12)', border: 'rgba(55,175,90,0.2)', bar: '#57b875' },
   card: { text: '#6090e0', bg: 'rgba(60,120,220,0.12)', border: 'rgba(60,120,220,0.2)', bar: '#6090e0' },

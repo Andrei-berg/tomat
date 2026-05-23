@@ -25,7 +25,7 @@ function avatarColor(name: string): string {
   return AVATAR_COLORS[code % AVATAR_COLORS.length]
 }
 
-const PT_LABEL: Record<string, string> = { cash: 'Нал', card: 'Карта', debt: 'Долг' }
+const PT_LABEL: Record<string, string> = { cash: 'Нал', card: 'Карта', debt: 'Кредит' }
 const PT_BAR: Record<string, string> = { cash: '#57b875', card: '#6090e0', debt: '#d4780e' }
 
 function effective(o: { manual_total: number | null; calculated_total: number | null; discount_percent: number | null }): number {
@@ -121,7 +121,7 @@ export default async function ClientProfilePage({ params }: { params: Promise<{ 
             { label: 'Заказов', value: String(client.orderCount), mono: false },
             { label: 'Потрачено', value: rub(client.totalSpent), mono: true },
             { label: 'Средний чек', value: rub(avgOrder), mono: true },
-            { label: 'Долг', value: client.debtAmount > 0 ? rub(client.debtAmount) : '—', mono: true, highlight: client.debtAmount > 0 },
+            { label: 'К получению', value: client.debtAmount > 0 ? rub(client.debtAmount) : '—', mono: true, highlight: client.debtAmount > 0 },
           ].map(stat => (
             <div
               key={stat.label}
