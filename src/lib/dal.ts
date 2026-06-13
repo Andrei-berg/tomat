@@ -313,6 +313,80 @@ export type ReportData = {
   toDate: string
 }
 
+// ─── Client-segment trend ────────────────────────────────────────────────────
+
+export type ClientSegment = 'anonymous' | 'occasional' | 'regular'
+export type SegmentMetrics = { orders: number; revenue: number; debt: number }
+export type SegmentTriple = Record<ClientSegment, SegmentMetrics>
+export type TrendBucket = { key: string; label: string } & SegmentTriple
+export type SegmentTrend = {
+  from: string
+  to: string
+  granularity: 'day' | 'month'
+  totals: SegmentTriple
+  buckets: TrendBucket[]
+}
+
+const MONTHS_SHORT = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
+const MONTHS_LONG = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь']
+
+// Revenue/debt by client segment (anonymous / occasional / regular), bucketed
+// over time. Period drives the slice; granularity auto-switches day→month for
+// ranges longer than ~a month. "revenue" = money actually received (cash/card
+// full, debt = payments received); "debt" = unpaid remainder.
+export async function getSegmentTrend(from: string, to: string): Promise<SegmentTrend> {
+  const supabase = createClient()
+  const [{ data: orders }, { data: payments }, { data: clients }] = await Promise.all([
+    supabase
+      .from('orders')
+      .select('id, created_at, client_id, payment_type, calculated_total, discount_percent, manual_total, status')
+      .gte('created_at', `${from}T00:00:00+00:00`)
+      .lte('created_at', `${to}T23:59:59+00:00`),
+    supabase.from('debt_payments').select('order_id, amount'),
+    supabase.from('clients').select('id, is_regular'),
+  ])
+
+  const paidByOrder = new Map<string, number>()
+  for (const p of payments ?? []) {
+    paidByOrder.set(p.order_id, (paidByOrder.get(p.order_id) ?? 0) + p.amount)
+  }
+  const regularById = new Map<string, boolean>()
+  for (const c of clients ?? []) regularById.set(c.id, c.is_regular)
+
+  const days = Math.floor((Date.parse(to) - Date.parse(from)) / 86400000) + 1
+  const granularity: 'day' | 'month' = days <= 31 ? 'day' : 'month'
+
+  const empty = (): SegmentMetrics => ({ orders: 0, revenue: 0, debt: 0 })
+  const emptyTriple = (): SegmentTriple => ({ anonymous: empty(), occasional: empty(), regular: empty() })
+
+  const totals = emptyTriple()
+  const bucketMap = new Map<string, TrendBucket>()
+
+  for (const o of orders ?? []) {
+    const seg: ClientSegment =
+      o.client_id == null ? 'anonymous' : regularById.get(o.client_id) ? 'regular' : 'occasional'
+    const eff = calcEffective(o)
+    const paid = paidByOrder.get(o.id) ?? 0
+    const revenue = o.payment_type === 'debt' ? paid : eff
+    const debt = o.status === 'debt' || o.status === 'partial' ? Math.max(0, eff - paid) : 0
+
+    const key = granularity === 'day' ? o.created_at.slice(0, 10) : o.created_at.slice(0, 7)
+    let b = bucketMap.get(key)
+    if (!b) {
+      const [y, m, d] = key.split('-')
+      const mi = parseInt(m, 10) - 1
+      const label = granularity === 'day' ? `${parseInt(d, 10)} ${MONTHS_SHORT[mi]}` : `${MONTHS_LONG[mi]} ${y}`
+      b = { key, label, ...emptyTriple() }
+      bucketMap.set(key, b)
+    }
+    b[seg].orders++; b[seg].revenue += revenue; b[seg].debt += debt
+    totals[seg].orders++; totals[seg].revenue += revenue; totals[seg].debt += debt
+  }
+
+  const buckets = Array.from(bucketMap.values()).sort((a, b) => b.key.localeCompare(a.key))
+  return { from, to, granularity, totals, buckets }
+}
+
 export async function getReportData(from: string, to: string): Promise<ReportData> {
   const supabase = createClient()
 

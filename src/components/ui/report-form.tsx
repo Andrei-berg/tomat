@@ -1,7 +1,7 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import type { ReportData } from '@/lib/dal'
+import PeriodControls from '@/components/ui/period-controls'
 
 function formatRub(n: number): string {
   return n.toLocaleString('ru-RU', {
@@ -20,21 +20,8 @@ export default function ReportForm({
   from: string
   to: string
 }) {
-  const router = useRouter()
   const { paymentSummary: ps, productRows } = data
   const totalRevenue = ps.cash + ps.card
-
-  function handleDateChange(field: 'from' | 'to', value: string) {
-    const params = new URLSearchParams()
-    if (field === 'from') {
-      params.set('from', value)
-      params.set('to', to)
-    } else {
-      params.set('from', from)
-      params.set('to', value)
-    }
-    router.push(`/report?${params.toString()}`)
-  }
 
   const sectionTitle: React.CSSProperties = {
     fontSize: '13px',
@@ -79,52 +66,9 @@ export default function ReportForm({
 
   return (
     <div>
-      {/* Date range pickers */}
+      {/* Period selection (presets + manual range) */}
       <p style={sectionTitle}>Период</p>
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '4px' }}>
-        <label style={{ flex: 1, fontSize: '13px', color: 'var(--mk-text-2)' }}>
-          С
-          <input
-            type="date"
-            value={from}
-            max={to}
-            onChange={e => handleDateChange('from', e.target.value)}
-            style={{
-              display: 'block',
-              width: '100%',
-              marginTop: '4px',
-              padding: '8px 10px',
-              borderRadius: '8px',
-              border: '1px solid var(--mk-border)',
-              background: 'var(--mk-surface)',
-              color: 'var(--mk-text)',
-              fontSize: '14px',
-              colorScheme: 'dark',
-            }}
-          />
-        </label>
-        <label style={{ flex: 1, fontSize: '13px', color: 'var(--mk-text-2)' }}>
-          По
-          <input
-            type="date"
-            value={to}
-            min={from}
-            onChange={e => handleDateChange('to', e.target.value)}
-            style={{
-              display: 'block',
-              width: '100%',
-              marginTop: '4px',
-              padding: '8px 10px',
-              borderRadius: '8px',
-              border: '1px solid var(--mk-border)',
-              background: 'var(--mk-surface)',
-              color: 'var(--mk-text)',
-              fontSize: '14px',
-              colorScheme: 'dark',
-            }}
-          />
-        </label>
-      </div>
+      <PeriodControls from={from} to={to} basePath="/report" />
 
       {/* Revenue by payment type */}
       <p style={sectionTitle}>Выручка</p>
