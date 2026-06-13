@@ -7,7 +7,7 @@ import { createClient as createSupabaseClient } from '@/lib/supabase/server'
 
 export type CreateOrderState = { error?: string; success?: boolean; orderId?: string } | undefined
 export type UpdateOrderState = { error?: string } | undefined
-export type ClientResult = { id: string; name: string }
+export type ClientResult = { id: string; name: string; is_regular?: boolean }
 
 export async function searchClients(query: string): Promise<ClientResult[]> {
   await verifySession()
@@ -15,15 +15,18 @@ export async function searchClients(query: string): Promise<ClientResult[]> {
   const supabase = createSupabaseClient()
   const { data } = await supabase
     .from('clients')
-    .select('id, name')
-    .ilike('name', `%${query}%`)
+    .select('id, name, is_regular')
+    // Regulars first, then occasional — both name-sorted
+    .order('is_regular', { ascending: false })
     .order('name')
+    .ilike('name', `%${query}%`)
     .limit(8)
   return data ?? []
 }
 
 export async function createClient(
   name: string,
+  isRegular = false,
 ): Promise<ClientResult | { error: string }> {
   await verifySession()
   const trimmed = name.trim()
@@ -31,10 +34,11 @@ export async function createClient(
   const supabase = createSupabaseClient()
   const { data, error } = await supabase
     .from('clients')
-    .insert({ name: trimmed })
-    .select('id, name')
+    .insert({ name: trimmed, is_regular: isRegular })
+    .select('id, name, is_regular')
     .single()
   if (error) return { error: error.message }
+  revalidatePath('/clients')
   return data as ClientResult
 }
 

@@ -35,6 +35,7 @@ npm run lint     # ESLint
 - **Database:** agent creates migrations in `supabase/migrations/`, human executes them manually
 - **Debt balance:** never stored — always computed at query time via SQL SUM
 - **Price snapshot:** `price_per_kg` is copied into `order_items` at order creation
+- **Client types:** `clients.is_regular` splits постоянных (`true`) from разовых/walk-in (`false`). Anonymous cash sale = no client row (`order.client_id` null). Both types get a real `client_id`, so debts are tracked/paid identically; promotion to regular just flips the flag (history preserved).
 
 ## Key Files
 

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { verifySession, getClientsWithStats } from '@/lib/dal'
+import type { ClientWithStats } from '@/lib/dal'
 import BottomNav from '@/components/ui/bottom-nav'
 
 function rub(n: number) {
@@ -29,12 +30,84 @@ function avatarColor(name: string): string {
   return AVATAR_COLORS[code % AVATAR_COLORS.length]
 }
 
+function ClientCard({ client, i }: { client: ClientWithStats; i: number }) {
+  const color = avatarColor(client.name)
+  const hasDebt = client.debtAmount > 0
+  return (
+    <Link
+      key={client.id}
+      href={`/clients/${client.id}`}
+      style={{
+        display: 'flex', alignItems: 'center', gap: '14px',
+        padding: '14px 16px', borderRadius: '14px',
+        background: 'var(--mk-card)', border: '1px solid var(--mk-border)',
+        textDecoration: 'none',
+        animation: 'mkUp 0.22s both',
+        animationDelay: `${i * 0.03}s`,
+      }}
+    >
+      {/* Avatar */}
+      <div style={{
+        width: '44px', height: '44px', borderRadius: '12px', flexShrink: 0,
+        background: `${color}22`, border: `1px solid ${color}44`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: '15px', fontWeight: 800, color, letterSpacing: '-0.02em',
+      }}>
+        {initials(client.name)}
+      </div>
+
+      {/* Info */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--mk-text)', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {client.name}
+          </span>
+          {hasDebt && (
+            <span style={{
+              fontSize: '10px', fontWeight: 700, padding: '2px 7px', borderRadius: '5px',
+              background: 'var(--mk-amber-bg)', color: 'var(--mk-amber)',
+              border: '1px solid var(--mk-amber-border)', flexShrink: 0,
+              letterSpacing: '0.03em',
+            }}>
+              ДОЛГ
+            </span>
+          )}
+        </div>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <span style={{ fontSize: '12px', color: 'var(--mk-text-2)' }}>
+            {client.orderCount} заказ{client.orderCount === 1 ? '' : client.orderCount < 5 ? 'а' : 'ов'}
+          </span>
+          {client.lastOrderAt && (
+            <span style={{ fontSize: '12px', color: 'var(--mk-text-3)' }}>
+              {relativeDate(client.lastOrderAt)}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Amount */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', flexShrink: 0 }}>
+        <span style={{ fontSize: '15px', fontWeight: 800, color: 'var(--mk-text)', letterSpacing: '-0.03em', fontFamily: 'var(--font-geist-mono)' }}>
+          {rub(client.totalSpent)}
+        </span>
+        {hasDebt && (
+          <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--mk-amber)', fontFamily: 'var(--font-geist-mono)' }}>
+            -{rub(client.debtAmount)}
+          </span>
+        )}
+      </div>
+    </Link>
+  )
+}
+
 export default async function ClientsPage() {
   await verifySession()
   const clients = await getClientsWithStats()
 
   const withDebt = clients.filter(c => c.debtAmount > 0)
   const active = [...clients].sort((a, b) => (b.lastOrderAt ?? '').localeCompare(a.lastOrderAt ?? ''))
+  const regulars = active.filter(c => c.is_regular)
+  const occasional = active.filter(c => !c.is_regular)
 
   return (
     <div style={{ minHeight: '100svh', background: 'var(--mk-bg)', fontFamily: 'var(--font-geist-sans)' }}>
@@ -108,76 +181,30 @@ export default async function ClientsPage() {
             </p>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            {active.map((client, i) => {
-              const color = avatarColor(client.name)
-              const hasDebt = client.debtAmount > 0
-              return (
-                <Link
-                  key={client.id}
-                  href={`/clients/${client.id}`}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: '14px',
-                    padding: '14px 16px', borderRadius: '14px',
-                    background: 'var(--mk-card)', border: '1px solid var(--mk-border)',
-                    textDecoration: 'none',
-                    animation: 'mkUp 0.22s both',
-                    animationDelay: `${i * 0.03}s`,
-                  }}
-                >
-                  {/* Avatar */}
-                  <div style={{
-                    width: '44px', height: '44px', borderRadius: '12px', flexShrink: 0,
-                    background: `${color}22`, border: `1px solid ${color}44`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '15px', fontWeight: 800, color, letterSpacing: '-0.02em',
-                  }}>
-                    {initials(client.name)}
-                  </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              {regulars.map((client, i) => (
+                <ClientCard key={client.id} client={client} i={i} />
+              ))}
+              {regulars.length === 0 && (
+                <p style={{ margin: 0, padding: '8px 2px', fontSize: '13px', color: 'var(--mk-text-3)' }}>
+                  Постоянных клиентов пока нет
+                </p>
+              )}
+            </div>
 
-                  {/* Info */}
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--mk-text)', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {client.name}
-                      </span>
-                      {hasDebt && (
-                        <span style={{
-                          fontSize: '10px', fontWeight: 700, padding: '2px 7px', borderRadius: '5px',
-                          background: 'var(--mk-amber-bg)', color: 'var(--mk-amber)',
-                          border: '1px solid var(--mk-amber-border)', flexShrink: 0,
-                          letterSpacing: '0.03em',
-                        }}>
-                          ДОЛГ
-                        </span>
-                      )}
-                    </div>
-                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                      <span style={{ fontSize: '12px', color: 'var(--mk-text-2)' }}>
-                        {client.orderCount} заказ{client.orderCount === 1 ? '' : client.orderCount < 5 ? 'а' : 'ов'}
-                      </span>
-                      {client.lastOrderAt && (
-                        <span style={{ fontSize: '12px', color: 'var(--mk-text-3)' }}>
-                          {relativeDate(client.lastOrderAt)}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Amount */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', flexShrink: 0 }}>
-                    <span style={{ fontSize: '15px', fontWeight: 800, color: 'var(--mk-text)', letterSpacing: '-0.03em', fontFamily: 'var(--font-geist-mono)' }}>
-                      {rub(client.totalSpent)}
-                    </span>
-                    {hasDebt && (
-                      <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--mk-amber)', fontFamily: 'var(--font-geist-mono)' }}>
-                        -{rub(client.debtAmount)}
-                      </span>
-                    )}
-                  </div>
-                </Link>
-              )
-            })}
+            {occasional.length > 0 && (
+              <div>
+                <p style={{ margin: '0 0 8px', fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--mk-text-3)' }}>
+                  Разовые · {occasional.length}
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {occasional.map((client, i) => (
+                    <ClientCard key={client.id} client={client} i={i} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { verifySession, getClientWithStats, getClientOrders } from '@/lib/dal'
+import { setClientRegular } from '@/app/actions/clients'
 import BottomNav from '@/components/ui/bottom-nav'
 
 function rub(n: number) {
@@ -89,6 +90,16 @@ export default async function ClientProfilePage({ params }: { params: Promise<{ 
             <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--mk-text)', lineHeight: 1.1 }}>
               {client.name}
             </h1>
+            {!client.is_regular && (
+              <span style={{
+                display: 'inline-block', marginTop: '6px',
+                fontSize: '10px', fontWeight: 700, padding: '3px 8px', borderRadius: '6px',
+                background: 'var(--mk-surface)', color: 'var(--mk-text-3)',
+                border: '1px solid var(--mk-border)', letterSpacing: '0.06em', textTransform: 'uppercase',
+              }}>
+                Разовый клиент
+              </span>
+            )}
             {client.phone && (
               <a href={`tel:${client.phone}`} style={{ display: 'block', marginTop: '6px', fontSize: '14px', color: 'var(--mk-text-2)', textDecoration: 'none', fontWeight: 500 }}>
                 {client.phone}
@@ -114,6 +125,33 @@ export default async function ClientProfilePage({ params }: { params: Promise<{ 
             </svg>
           </Link>
         </div>
+
+        {/* ── Promote occasional → regular ── */}
+        {!client.is_regular && (
+          <form
+            action={async () => {
+              'use server'
+              await setClientRegular(id, true)
+            }}
+            style={{ marginBottom: '24px' }}
+          >
+            <button
+              type="submit"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                width: '100%', padding: '12px', borderRadius: '12px',
+                background: 'var(--mk-card)', border: '1px solid var(--mk-border)',
+                color: 'var(--mk-text)', fontSize: '14px', fontWeight: 700, cursor: 'pointer',
+                fontFamily: 'var(--font-geist-sans)',
+              }}
+            >
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                <path d="M7.5 1.5l1.6 3.9 4.2.3-3.2 2.7 1 4.1-3.6-2.3-3.6 2.3 1-4.1L1.7 5.7l4.2-.3 1.6-3.9z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+              </svg>
+              Сделать постоянным
+            </button>
+          </form>
+        )}
 
         {/* ── Stats grid ── */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '24px' }}>

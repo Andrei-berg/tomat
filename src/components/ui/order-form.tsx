@@ -139,10 +139,10 @@ export default function OrderForm({ products, priceMap, initialClientId, initial
   }, [clientQuery])
 
   /* ── Handlers ── */
-  async function handleAddClient() {
+  async function handleAddClient(isRegular: boolean) {
     if (!clientQuery.trim()) return
     setClientCreating(true)
-    const result = await createClient(clientQuery)
+    const result = await createClient(clientQuery, isRegular)
     setClientCreating(false)
     if ('error' in result) return
     setSelectedClient(result)
@@ -631,7 +631,9 @@ export default function OrderForm({ products, priceMap, initialClientId, initial
                         setShowDropdown(false)
                       }}
                       style={{
-                        display: 'block',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
                         width: '100%',
                         padding: '12px 14px',
                         textAlign: 'left',
@@ -646,33 +648,66 @@ export default function OrderForm({ products, priceMap, initialClientId, initial
                       }}
                     >
                       {r.name}
+                      {r.is_regular === false && (
+                        <span style={{
+                          fontSize: '10px', fontWeight: 700, padding: '2px 6px', borderRadius: '5px',
+                          background: 'var(--mk-surface)', color: 'var(--mk-text-3)',
+                          border: '1px solid var(--mk-border)', letterSpacing: '0.03em',
+                        }}>
+                          РАЗОВЫЙ
+                        </span>
+                      )}
                     </button>
                   )
                 })}
 
-                {/* Add button — shown if no exact match */}
+                {/* Add buttons — shown if no exact match */}
                 {!clientResults.some(r => r.name.toLowerCase() === clientQuery.toLowerCase()) && (
-                  <button
-                    type="button"
-                    onMouseDown={e => e.preventDefault()}
-                    onClick={handleAddClient}
-                    disabled={clientCreating}
-                    style={{
-                      display: 'block',
-                      width: '100%',
-                      padding: '12px 14px',
-                      textAlign: 'left',
-                      background: 'rgba(200,67,26,0.07)',
-                      border: 'none',
-                      color: 'var(--mk-accent)',
-                      fontSize: '14px',
-                      fontWeight: 600,
-                      cursor: clientCreating ? 'not-allowed' : 'pointer',
-                      fontFamily: 'var(--font-geist-sans)',
-                    }}
-                  >
-                    {clientCreating ? 'Добавляю...' : `Добавить «${clientQuery}»`}
-                  </button>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <button
+                      type="button"
+                      onMouseDown={e => e.preventDefault()}
+                      onClick={() => handleAddClient(false)}
+                      disabled={clientCreating}
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        padding: '12px 14px',
+                        textAlign: 'left',
+                        background: 'rgba(200,67,26,0.07)',
+                        border: 'none',
+                        color: 'var(--mk-accent)',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        cursor: clientCreating ? 'not-allowed' : 'pointer',
+                        fontFamily: 'var(--font-geist-sans)',
+                      }}
+                    >
+                      {clientCreating ? 'Добавляю...' : `Записать разово «${clientQuery}»`}
+                    </button>
+                    <button
+                      type="button"
+                      onMouseDown={e => e.preventDefault()}
+                      onClick={() => handleAddClient(true)}
+                      disabled={clientCreating}
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        padding: '12px 14px',
+                        textAlign: 'left',
+                        background: 'none',
+                        borderTop: '1px solid var(--mk-border)',
+                        borderLeft: 'none', borderRight: 'none', borderBottom: 'none',
+                        color: 'var(--mk-text-2)',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        cursor: clientCreating ? 'not-allowed' : 'pointer',
+                        fontFamily: 'var(--font-geist-sans)',
+                      }}
+                    >
+                      В постоянные
+                    </button>
+                  </div>
                 )}
               </div>
             )}

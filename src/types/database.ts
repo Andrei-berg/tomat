@@ -16,9 +16,9 @@ export interface Database {
         Relationships: []
       }
       clients: {
-        Row: { id: string; name: string; phone: string | null; notes: string | null; created_at: string }
-        Insert: { id?: string; name: string; phone?: string | null; notes?: string | null; created_at?: string }
-        Update: { id?: string; name?: string; phone?: string | null; notes?: string | null; created_at?: string }
+        Row: { id: string; name: string; phone: string | null; notes: string | null; is_regular: boolean; created_at: string }
+        Insert: { id?: string; name: string; phone?: string | null; notes?: string | null; is_regular?: boolean; created_at?: string }
+        Update: { id?: string; name?: string; phone?: string | null; notes?: string | null; is_regular?: boolean; created_at?: string }
         Relationships: []
       }
       orders: {

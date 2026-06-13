@@ -142,10 +142,10 @@ export default function OrderEditForm({
   }, [clientQuery])
 
   /* ── Handlers ── */
-  async function handleAddClient() {
+  async function handleAddClient(isRegular: boolean) {
     if (!clientQuery.trim()) return
     setClientCreating(true)
-    const result = await createClient(clientQuery)
+    const result = await createClient(clientQuery, isRegular)
     setClientCreating(false)
     if ('error' in result) return
     setSelectedClient(result)
@@ -440,31 +440,57 @@ export default function OrderEditForm({
                       onMouseDown={e => e.preventDefault()}
                       onClick={() => { setSelectedClient(r); setClientQuery(''); setShowDropdown(false) }}
                       style={{
-                        display: 'block', width: '100%', padding: '12px 14px', textAlign: 'left',
+                        display: 'flex', alignItems: 'center', gap: '8px', width: '100%', padding: '12px 14px', textAlign: 'left',
                         background: 'none', border: 'none', borderBottom: '1px solid var(--mk-border)',
                         color: 'var(--mk-text)', fontSize: '15px', fontWeight: exactMatch ? 600 : 400,
                         cursor: 'pointer', fontFamily: 'var(--font-geist-sans)',
                       }}
                     >
                       {r.name}
+                      {r.is_regular === false && (
+                        <span style={{
+                          fontSize: '10px', fontWeight: 700, padding: '2px 6px', borderRadius: '5px',
+                          background: 'var(--mk-surface)', color: 'var(--mk-text-3)',
+                          border: '1px solid var(--mk-border)', letterSpacing: '0.03em',
+                        }}>
+                          РАЗОВЫЙ
+                        </span>
+                      )}
                     </button>
                   )
                 })}
                 {!clientResults.some(r => r.name.toLowerCase() === clientQuery.toLowerCase()) && (
-                  <button
-                    type="button"
-                    onMouseDown={e => e.preventDefault()}
-                    onClick={handleAddClient}
-                    disabled={clientCreating}
-                    style={{
-                      display: 'block', width: '100%', padding: '12px 14px', textAlign: 'left',
-                      background: 'rgba(200,67,26,0.07)', border: 'none',
-                      color: 'var(--mk-accent)', fontSize: '14px', fontWeight: 600,
-                      cursor: clientCreating ? 'not-allowed' : 'pointer', fontFamily: 'var(--font-geist-sans)',
-                    }}
-                  >
-                    {clientCreating ? 'Добавляю...' : `Добавить «${clientQuery}»`}
-                  </button>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <button
+                      type="button"
+                      onMouseDown={e => e.preventDefault()}
+                      onClick={() => handleAddClient(false)}
+                      disabled={clientCreating}
+                      style={{
+                        display: 'block', width: '100%', padding: '12px 14px', textAlign: 'left',
+                        background: 'rgba(200,67,26,0.07)', border: 'none',
+                        color: 'var(--mk-accent)', fontSize: '14px', fontWeight: 600,
+                        cursor: clientCreating ? 'not-allowed' : 'pointer', fontFamily: 'var(--font-geist-sans)',
+                      }}
+                    >
+                      {clientCreating ? 'Добавляю...' : `Записать разово «${clientQuery}»`}
+                    </button>
+                    <button
+                      type="button"
+                      onMouseDown={e => e.preventDefault()}
+                      onClick={() => handleAddClient(true)}
+                      disabled={clientCreating}
+                      style={{
+                        display: 'block', width: '100%', padding: '12px 14px', textAlign: 'left',
+                        background: 'none', borderTop: '1px solid var(--mk-border)',
+                        borderLeft: 'none', borderRight: 'none', borderBottom: 'none',
+                        color: 'var(--mk-text-2)', fontSize: '14px', fontWeight: 600,
+                        cursor: clientCreating ? 'not-allowed' : 'pointer', fontFamily: 'var(--font-geist-sans)',
+                      }}
+                    >
+                      В постоянные
+                    </button>
+                  </div>
                 )}
               </div>
             )}

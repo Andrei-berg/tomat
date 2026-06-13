@@ -27,3 +27,13 @@ export async function updateClient(
   revalidatePath('/clients')
   redirect(`/clients/${id}`)
 }
+
+// Promote an occasional client to a regular (or demote back).
+// Same row — order and debt history is preserved.
+export async function setClientRegular(id: string, isRegular: boolean): Promise<void> {
+  await verifySession()
+  const supabase = createSupabaseClient()
+  await supabase.from('clients').update({ is_regular: isRegular }).eq('id', id)
+  revalidatePath(`/clients/${id}`)
+  revalidatePath('/clients')
+}
