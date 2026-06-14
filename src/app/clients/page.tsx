@@ -122,13 +122,28 @@ export default async function ClientsPage() {
             <h1 style={{ margin: 0, fontSize: '32px', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, color: 'var(--mk-text)' }}>
               Клиенты
             </h1>
-            <span style={{
-              fontSize: '13px', fontWeight: 600, color: 'var(--mk-text-2)',
-              background: 'var(--mk-card)', border: '1px solid var(--mk-border)',
-              padding: '4px 12px', borderRadius: '20px',
-            }}>
-              {clients.length}
-            </span>
+            <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
+              <span style={{
+                display: 'inline-flex', alignItems: 'baseline', gap: '4px',
+                fontSize: '13px', fontWeight: 600, color: 'var(--mk-text)',
+                background: 'var(--mk-card)', border: '1px solid var(--mk-border)',
+                padding: '4px 10px', borderRadius: '20px',
+              }}>
+                {regulars.length}
+                <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--mk-text-3)' }}>пост.</span>
+              </span>
+              {occasional.length > 0 && (
+                <span style={{
+                  display: 'inline-flex', alignItems: 'baseline', gap: '4px',
+                  fontSize: '13px', fontWeight: 600, color: 'var(--mk-text-2)',
+                  background: 'var(--mk-surface)', border: '1px solid var(--mk-border)',
+                  padding: '4px 10px', borderRadius: '20px',
+                }}>
+                  {occasional.length}
+                  <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--mk-text-3)' }}>раз.</span>
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
