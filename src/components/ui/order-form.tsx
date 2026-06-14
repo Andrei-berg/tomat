@@ -535,6 +535,14 @@ export default function OrderForm({ products, priceMap, initialClientId, initial
           Клиент{needsClient && <span style={{ color: 'var(--mk-accent)', marginLeft: '4px' }}>*</span>}
         </span>
 
+        {!selectedClient && (
+          <p style={{ margin: '-2px 0 0', fontSize: '12px', lineHeight: 1.45, color: 'var(--mk-text-3)' }}>
+            {needsClient
+              ? 'Для долга нужно имя — выбери клиента или запиши разово, чтобы было у кого спросить.'
+              : 'Оставь пустым — это анонимная продажа. «Записать разово» — если дал в долг или вернёшься к человеку. «В постоянные» — для тех, кто ходит регулярно.'}
+          </p>
+        )}
+
         {selectedClient ? (
           /* Selected client chip */
           <div
